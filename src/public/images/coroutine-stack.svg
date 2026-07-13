@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Coroutine frames</title>
+  <desc id="desc">A layered visual representing suspended coroutine frames and resumable work.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#121318"/>
+      <stop offset="0.52" stop-color="#1b2630"/>
+      <stop offset="1" stop-color="#2b1b25"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#7dd3c7" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#f7d66a" stop-opacity="0.72"/>
+    </linearGradient>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1320" cy="160" r="210" fill="#7dd3c7" opacity="0.16" filter="url(#soft)"/>
+  <circle cx="310" cy="760" r="260" fill="#f7d66a" opacity="0.11" filter="url(#soft)"/>
+  <g opacity="0.22" stroke="#f5f1e8" stroke-width="2">
+    <path d="M0 660 C 280 550, 350 780, 640 640 S 1160 600, 1600 430" fill="none"/>
+    <path d="M0 710 C 280 600, 350 830, 640 690 S 1160 650, 1600 480" fill="none"/>
+  </g>
+  <g transform="translate(520 150)">
+    <rect x="0" y="280" width="660" height="190" rx="28" fill="#0f1117" opacity="0.72" stroke="#f5f1e8" stroke-opacity="0.24"/>
+    <rect x="60" y="200" width="660" height="190" rx="28" fill="#161c24" opacity="0.82" stroke="#7dd3c7" stroke-opacity="0.52"/>
+    <rect x="120" y="120" width="660" height="190" rx="28" fill="#22202a" opacity="0.9" stroke="#f7d66a" stroke-opacity="0.52"/>
+    <rect x="180" y="40" width="660" height="190" rx="28" fill="url(#panel)" opacity="0.32" stroke="#f5f1e8" stroke-opacity="0.64"/>
+    <text x="240" y="125" fill="#f5f1e8" font-family="system-ui, sans-serif" font-size="44" font-weight="740">co_await</text>
+    <text x="242" y="174" fill="#f5f1e8" opacity="0.82" font-family="system-ui, sans-serif" font-size="24">save state, return to caller</text>
+  </g>
+  <g fill="#f5f1e8" opacity="0.7" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="24">
+    <text x="90" y="140">Task&lt;Response&gt;</text>
+    <text x="90" y="176">std::expected&lt;T, Error&gt;</text>
+    <text x="90" y="212">resume_handle()</text>
+  </g>
+</svg>

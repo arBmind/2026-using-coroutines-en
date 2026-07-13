@@ -1,0 +1,27 @@
+{
+  "name": "meetingcpp-2026-coroutines-slides",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "slidev --bind 0.0.0.0 src/slides.md --remote",
+    "build": "slidev build src/slides.md --out dist --base ./",
+    "build:pdf": "slidev build src/slides.md --out dist --base ./ --download",
+    "export": "slidev export src/slides.md --output coroutines-slides.pdf --per-slide",
+    "export:clicks": "slidev export src/slides.md --output coroutines-slides-clicks.pdf --with-clicks --with-toc",
+    "screenshots": "scripts/capture-slides.sh",
+    "format": "slidev format src/slides.md"
+  },
+  "devDependencies": {
+    "@iconify-json/carbon": "latest",
+    "@shikijs/transformers": "latest",
+    "@slidev/cli": "latest",
+    "@slidev/parser": "latest",
+    "@slidev/theme-default": "^0.25.0",
+    "@slidev/types": "latest",
+    "playwright-chromium": "latest",
+    "prettier": "latest",
+    "prettier-plugin-slidev": "latest",
+    "shiki": "latest",
+    "vue": "latest"
+  }
+}

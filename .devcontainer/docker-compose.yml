@@ -1,0 +1,23 @@
+volumes:
+  node-modules:
+  npm-cache:
+  playwright-cache:
+
+services:
+  slides:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sleep infinity
+    environment:
+      PLAYWRIGHT_BROWSERS_PATH: /home/node/.cache/ms-playwright
+    volumes:
+      - ..:/workspaces/2026-11_UsingCoroutines:cached
+      - node-modules:/workspaces/2026-11_UsingCoroutines/node_modules
+      - npm-cache:/home/node/.npm
+      - playwright-cache:/home/node/.cache/ms-playwright
+    ports:
+      - "3030:3030"
+    security_opt:
+      - seccomp=unconfined
+      - apparmor=unconfined

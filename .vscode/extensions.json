@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "antfu.slidev",
+    "Vue.volar",
+    "llvm-vs-code-extensions.vscode-clangd",
+    "ms-vscode.cpptools",
+    "esbenp.prettier-vscode"
+  ]
+}

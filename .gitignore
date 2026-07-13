@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.slidev/
+coroutines-slides*.pdf
+slides-export.*
+screenshots/
+og-image.png
+**/docker-compose.override.yml
+/.env
+/mcpp_submitted.md
+/sketch.md
+/src/snippets/desktop-duplication-cpp/
+/src/snippets/hourglass-app2/

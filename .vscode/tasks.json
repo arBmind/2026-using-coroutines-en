@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Slidev: dev",
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Slidev: build HTML",
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Slidev: export PDF",
+      "type": "npm",
+      "script": "export",
+      "problemMatcher": []
+    },
+    {
+      "label": "Slidev: export PDF with clicks",
+      "type": "npm",
+      "script": "export:clicks",
+      "problemMatcher": []
+    }
+  ]
+}
