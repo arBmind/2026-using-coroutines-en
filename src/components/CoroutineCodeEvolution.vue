@@ -127,18 +127,25 @@ const current = computed(() => steps[step.value]);
 </script>
 
 <template>
-  <div class="code-evolution">
-    <div class="evolution-code-shell" :class="{ 'is-animating': animating }">
-      <div class="evolution-highlights" aria-hidden="true">
+  <div class="mt-5">
+    <div
+      class="relative overflow-hidden rounded-xl border border-slate-300 bg-[#f7f7f8] shadow-slide-card"
+      :class="{ 'is-animating': animating }"
+    >
+      <div
+        class="evolution-highlights pointer-events-none absolute inset-x-0 top-3 z-0 transition-opacity duration-150"
+        aria-hidden="true"
+      >
         <span
           v-for="line in current.lines"
           :key="line"
+          class="absolute inset-x-0 h-[1.72rem] border-l-[5px] border-brand-orange bg-orange-400/20 transition-[top,opacity] duration-[450ms] ease-out"
           :style="{ '--line': line }"
         />
       </div>
       <ShikiMagicMove
         v-if="highlighter"
-        class="evolution-code"
+        class="relative z-1"
         :highlighter="highlighter"
         lang="cpp"
         theme="github-light"
@@ -157,81 +164,30 @@ const current = computed(() => steps[step.value]);
         }"
         @end="animating = false"
       />
-      <pre v-else class="evolution-loading">Loading source…</pre>
+      <pre v-else class="relative z-1">Loading source…</pre>
     </div>
 
-    <div class="evolution-explanation">
-      <span class="evolution-step">{{ step }}/{{ steps.length - 1 }}</span>
-      <code>{{ current.keyword }}</code>
+    <div
+      class="mt-[0.85rem] grid min-h-16 grid-cols-[auto_auto_1fr] items-center gap-3 rounded-xl bg-cyan-50 px-4 py-[0.8rem] text-[0.9rem] font-[650] text-cyan-800"
+    >
+      <span
+        class="font-mono text-xs font-extrabold leading-none text-brand-orange"
+        >{{ step }}/{{ steps.length - 1 }}</span
+      >
+      <code class="rounded-md bg-slate-900 px-[0.45rem] py-1 text-cyan-300">{{
+        current.keyword
+      }}</code>
       <span>{{ current.explanation }}</span>
     </div>
   </div>
 </template>
 
 <style scoped>
-.code-evolution {
-  margin-top: 1.25rem;
-}
-.evolution-code-shell {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #f7f7f8;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.09);
-}
-.evolution-highlights {
-  position: absolute;
-  z-index: 0;
-  inset: 12px 0 auto;
-  pointer-events: none;
-  transition: opacity 150ms ease;
-}
 .is-animating .evolution-highlights {
   opacity: 0;
 }
 .evolution-highlights span {
-  position: absolute;
   top: calc((var(--line) - 1) * 1.72rem);
-  right: 0;
-  left: 0;
-  height: 1.72rem;
-  border-left: 5px solid #ea580c;
-  background: rgba(251, 146, 60, 0.2);
-  transition:
-    top 450ms ease,
-    opacity 250ms ease;
-}
-.evolution-code,
-.evolution-loading {
-  position: relative;
-  z-index: 1;
-}
-.evolution-explanation {
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  gap: 0.75rem;
-  align-items: center;
-  min-height: 64px;
-  margin-top: 0.85rem;
-  border-radius: 12px;
-  background: #ecfeff;
-  padding: 0.8rem 1rem;
-  color: #155e75;
-  font-size: 0.9rem;
-  font-weight: 650;
-}
-.evolution-explanation code {
-  border-radius: 6px;
-  background: #0f172a;
-  color: #67e8f9;
-  padding: 0.25rem 0.45rem;
-}
-.evolution-step {
-  color: #ea580c;
-  font:
-    800 0.75rem/1 ui-monospace,
-    monospace;
 }
 :deep(.shiki-magic-move-container) {
   min-height: 300px;

@@ -169,16 +169,25 @@ function valueChanged<T extends { name: string; value: string }>(entry: T) {
 </script>
 
 <template>
-  <div class="execution-visual">
-    <div class="execution-code">
+  <div class="mt-4 grid grid-cols-[1.06fr_0.94fr] gap-4">
+    <div
+      class="self-start overflow-hidden rounded-xl border border-slate-300 bg-[#f7f7f8] py-[0.65rem] text-[1.1rem] shadow-slide-card"
+    >
       <div
         v-for="(line, index) in sourceLines"
         :key="index"
-        class="execution-line"
-        :class="{ active: current.line === index + 1 }"
+        class="grid min-h-[1.65rem] grid-cols-[2rem_1fr] items-center border-l-[5px] border-transparent pr-2 transition-[background,border-color] duration-250"
+        :class="{
+          'border-y border-y-orange-300 border-l-brand-orange bg-orange-400/22':
+            current.line === index + 1,
+        }"
       >
-        <span>{{ index + 1 }}</span>
-        <code>
+        <span class="text-center font-mono text-[1.1rem] text-slate-400">{{
+          index + 1
+        }}</span>
+        <code
+          class="overflow-hidden font-mono text-[1.1rem] whitespace-pre text-slate-800"
+        >
           <template v-if="sourceTokens[index]">
             <span
               v-for="(token, tokenIndex) in sourceTokens[index]"
@@ -192,158 +201,97 @@ function valueChanged<T extends { name: string; value: string }>(entry: T) {
       </div>
     </div>
 
-    <div class="memory-visual">
-      <section class="memory-area stack-area">
-        <header><strong>STACK</strong></header>
-        <TransitionGroup name="memory-card" tag="div" class="memory-cards">
+    <div class="grid min-h-[320px] grid-cols-[0.8fr_1.2fr] gap-[0.7rem]">
+      <section
+        class="rounded-xl border-2 border-slate-300 bg-slate-50 p-[0.7rem]"
+      >
+        <header class="mb-[0.65rem] flex flex-col">
+          <strong class="text-base tracking-[0.1em] text-brand-blue"
+            >STACK</strong
+          >
+        </header>
+        <TransitionGroup name="memory-card" tag="div" class="grid gap-2">
           <div
             v-for="entry in current.stack"
             :key="entry.name"
-            class="memory-card stack-card"
+            class="rounded-lg border-l-4 border-blue-600 bg-white px-[0.6rem] py-[0.55rem] font-mono text-base font-[650] leading-[1.3] text-blue-900"
           >
-            <span :class="{ 'changed-value': valueChanged(entry) }">
+            <span
+              :class="{
+                'animate-[value-change_500ms_ease-out] rounded-[3px] bg-amber-100 font-extrabold text-orange-800 shadow-[0_0_0_2px_#fdba74]':
+                  valueChanged(entry),
+              }"
+            >
               {{ entry.value }}
             </span>
           </div>
         </TransitionGroup>
       </section>
 
-      <section class="memory-area heap-area">
-        <header><strong>HEAP</strong></header>
+      <section
+        class="rounded-xl border-2 border-brand-cyan bg-cyan-50 p-[0.7rem]"
+      >
+        <header class="mb-[0.65rem] flex flex-col">
+          <strong class="text-base tracking-[0.1em] text-brand-blue"
+            >HEAP</strong
+          >
+        </header>
         <div
           v-if="current.heap.length"
-          class="heap-frame"
-          :class="{ 'frame-created': stage === 1 }"
+          class="relative rounded-[10px] border-2 border-dashed border-brand-cyan px-2 pt-[1.7rem] pb-2"
+          :class="{
+            'animate-[frame-created_500ms_ease-out] border-brand-orange shadow-[0_0_0_4px_rgb(251_146_60_/_0.25)]':
+              stage === 1,
+          }"
         >
-          <div class="frame-label">COROUTINE FRAME</div>
-          <TransitionGroup name="memory-card" tag="div" class="memory-cards">
+          <div
+            class="absolute top-0 right-0 rounded-tr-[7px] rounded-bl-[7px] bg-brand-blue px-[0.45rem] py-1 text-[0.55rem] font-extrabold tracking-[0.06em] text-white"
+          >
+            COROUTINE FRAME
+          </div>
+          <TransitionGroup name="memory-card" tag="div" class="grid gap-2">
             <div
               v-for="entry in current.heap"
               :key="entry.name"
-              class="memory-card heap-card"
+              class="rounded-lg border-l-4 border-brand-cyan bg-white px-[0.6rem] py-[0.55rem] font-mono text-base font-[650] leading-[1.3] text-cyan-800"
             >
               {{ entry.name }} =
-              <span :class="{ 'changed-value': valueChanged(entry) }">
+              <span
+                :class="{
+                  'animate-[value-change_500ms_ease-out] rounded-[3px] bg-amber-100 font-extrabold text-orange-800 shadow-[0_0_0_2px_#fdba74]':
+                    valueChanged(entry),
+                }"
+              >
                 {{ entry.value }}
               </span>
             </div>
           </TransitionGroup>
         </div>
-        <div v-else class="heap-empty">no allocation</div>
+        <div
+          v-else
+          class="grid min-h-[210px] place-items-center rounded-[10px] border-2 border-dashed border-slate-400 text-xs text-slate-500"
+        >
+          no allocation
+        </div>
       </section>
     </div>
 
-    <div class="execution-explanation">
-      <span>{{ stage + 1 }}/{{ stages.length }}</span>
-      <strong>{{ current.title }}</strong>
-      <p>{{ current.explanation }}</p>
+    <div
+      class="col-span-full grid min-h-[58px] grid-cols-[auto_auto_1fr] items-center gap-3 rounded-xl bg-slate-900 px-[0.9rem] py-[0.7rem] text-white"
+    >
+      <span
+        class="font-mono text-base font-extrabold leading-none text-orange-300"
+        >{{ stage + 1 }}/{{ stages.length }}</span
+      >
+      <strong class="text-base text-cyan-300">{{ current.title }}</strong>
+      <p class="m-0 text-base text-slate-300">
+        {{ current.explanation }}
+      </p>
     </div>
   </div>
 </template>
 
 <style scoped>
-.execution-visual {
-  display: grid;
-  grid-template-columns: 1.06fr 0.94fr;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-.execution-code {
-  align-self: start;
-  overflow: hidden;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #f7f7f8;
-  padding: 0.65rem 0;
-  font-size: 1.1rem;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-}
-.execution-line {
-  display: grid;
-  grid-template-columns: 2rem 1fr;
-  min-height: 1.65rem;
-  align-items: center;
-  border-left: 5px solid transparent;
-  padding-right: 0.5rem;
-  transition:
-    background 250ms ease,
-    border-color 250ms ease;
-
-  & > span {
-    color: #94a3b8;
-    font:
-      1.1rem ui-monospace,
-      monospace;
-    text-align: center;
-  }
-  code {
-    overflow: hidden;
-    color: #1e293b;
-    font:
-      1.1rem ui-monospace,
-      monospace;
-    white-space: pre;
-  }
-  &.active {
-    border-left-color: #ea580c;
-    background: rgba(251, 146, 60, 0.22);
-  }
-}
-.memory-visual {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 0.7rem;
-  min-height: 320px;
-}
-.memory-area {
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
-  background: #f8fafc;
-  padding: 0.7rem;
-  header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0.65rem;
-    strong {
-      color: #075985;
-      font-size: 1rem;
-      letter-spacing: 0.1em;
-    }
-  }
-}
-.heap-area {
-  border-color: #0891b2;
-  background: #ecfeff;
-}
-.memory-cards {
-  display: grid;
-  gap: 0.5rem;
-}
-.memory-card {
-  border-radius: 8px;
-  padding: 0.55rem 0.6rem;
-  font:
-    650 1rem/1.3 ui-monospace,
-    monospace;
-}
-.stack-card {
-  border-left: 4px solid #2563eb;
-  background: white;
-  color: #1e3a8a;
-}
-.heap-card {
-  border-left: 4px solid #0891b2;
-  background: white;
-  color: #155e75;
-}
-.changed-value {
-  border-radius: 3px;
-  background: #fef3c7;
-  box-shadow: 0 0 0 2px #fdba74;
-  color: #9a3412;
-  font-weight: 800;
-  animation: value-change 500ms ease-out;
-}
 @keyframes value-change {
   from {
     background: #fb923c;
@@ -354,17 +302,6 @@ function valueChanged<T extends { name: string; value: string }>(entry: T) {
     box-shadow: 0 0 0 2px #fdba74;
   }
 }
-.heap-frame {
-  position: relative;
-  border: 2px dashed #0891b2;
-  border-radius: 10px;
-  padding: 1.7rem 0.5rem 0.5rem;
-}
-.heap-frame.frame-created {
-  border-color: #ea580c;
-  box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.25);
-  animation: frame-created 500ms ease-out;
-}
 @keyframes frame-created {
   from {
     box-shadow: 0 0 0 10px rgba(251, 146, 60, 0.5);
@@ -372,54 +309,6 @@ function valueChanged<T extends { name: string; value: string }>(entry: T) {
   to {
     box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.25);
   }
-}
-.frame-label {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-radius: 0 7px 0 7px;
-  background: #075985;
-  color: white;
-  padding: 0.25rem 0.45rem;
-  font-size: 0.55rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-}
-.heap-empty {
-  display: grid;
-  min-height: 210px;
-  place-items: center;
-  border: 2px dashed #94a3b8;
-  border-radius: 10px;
-  color: #64748b;
-  font-size: 0.72rem;
-}
-.execution-explanation {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  gap: 0.75rem;
-  align-items: center;
-  min-height: 58px;
-  border-radius: 12px;
-  background: #0f172a;
-  color: white;
-  padding: 0.7rem 0.9rem;
-}
-.execution-explanation span {
-  color: #fdba74;
-  font:
-    800 1rem/1 ui-monospace,
-    monospace;
-}
-.execution-explanation strong {
-  color: #67e8f9;
-  font-size: 1rem;
-}
-.execution-explanation p {
-  margin: 0;
-  color: #cbd5e1;
-  font-size: 1rem;
 }
 .memory-card-enter-active,
 .memory-card-leave-active {
