@@ -12,7 +12,6 @@ services:
     environment:
       PLAYWRIGHT_BROWSERS_PATH: /home/node/.cache/ms-playwright
     volumes:
-      - ..:/workspaces/2026-11_UsingCoroutines:cached
       - node-modules:/workspaces/2026-11_UsingCoroutines/node_modules
       - npm-cache:/home/node/.npm
       - playwright-cache:/home/node/.cache/ms-playwright

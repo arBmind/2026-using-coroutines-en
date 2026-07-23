@@ -45,7 +45,7 @@ Welcome. Ask for a show of hands: who has read about coroutines, and who has shi
 
 ---
 layout: cover
-class: cover
+class: cover ps-24!
 ---
 
 # Background
@@ -68,19 +68,7 @@ Without any plumbing
 
 ---
 
-# Start with ordinary synchronous code
-
-<div class="mt-6">
-
-<<< ./snippets/coroutine-introduction/synchronous.cpp#synchronous-flow cpp {lines:true}
-
-</div>
-
----
-transition: slide-left
----
-
-# Make only the wait asynchronous
+# Simple Coroutine
 
 <CoroutineCodeEvolution />
 
@@ -95,7 +83,7 @@ transition: slide-left
 
 ---
 
-# Where did the function go?
+# Step Through Coroutine
 
 <CoroutineFrame />
 
@@ -139,11 +127,9 @@ transition: slide-left
     <div class="grid min-h-[54px] grid-cols-[0.6fr_1.4fr] items-center gap-[0.45rem] rounded-[9px] border-l-6 border-brand-orange bg-orange-50 px-[0.7rem] py-[0.55rem] shadow-[0_5px_14px_rgb(15_23_42_/_0.08)] [&_strong]:text-[0.82rem] [&_strong]:text-brand-blue [&_code]:text-base [&_code]:font-bold [&_code]:text-slate-800">
       <strong>awaiter</strong><code>await_suspend(continuation)</code>
     </div>
-    <div class="text-center text-[0.58rem] font-extrabold text-brand-orange">↑ called by</div>
     <div class="grid min-h-[54px] grid-cols-[0.6fr_1.4fr] items-center gap-[0.45rem] rounded-[9px] border-l-6 border-brand-cyan bg-white px-[0.7rem] py-[0.55rem] shadow-[0_5px_14px_rgb(15_23_42_/_0.08)] [&_strong]:text-[0.82rem] [&_strong]:text-brand-blue [&_code]:text-base [&_code]:font-bold [&_code]:text-slate-800">
       <strong>coroutine</strong><code>co_await Awaiter{};</code>
     </div>
-    <div class="text-center text-[0.58rem] font-extrabold text-brand-orange">↑ resumed by</div>
     <div class="grid min-h-[54px] grid-cols-[0.6fr_1.4fr] items-center gap-[0.45rem] rounded-[9px] border-l-6 border-brand-green bg-white px-[0.7rem] py-[0.55rem] shadow-[0_5px_14px_rgb(15_23_42_/_0.08)] [&_strong]:text-[0.82rem] [&_strong]:text-brand-blue [&_code]:text-base [&_code]:font-bold [&_code]:text-slate-800">
       <strong>last resumer</strong><code>coroutine.resume()</code>
     </div>
@@ -180,149 +166,274 @@ Personal bridge: these examples are not invented kata. They come from tools I ca
 
 ---
 layout: default
-class: "flex flex-col justify-center bg-[#0b111b] text-white [&_h1]:text-section-title [&_h1]:text-white [&_h1::after]:hidden"
+class: "relative overflow-hidden flex flex-col justify-center bg-[#0b111b] text-white [&_h1]:text-white [&_h1::after]:hidden"
 ---
 
-<div class="font-mono text-base font-extrabold leading-none tracking-[0.15em] text-cyan-300">EXAMPLE 01</div>
+<div class="absolute right-20 bottom-6 font-mono text-[10rem] font-black leading-none text-white/3">01</div>
 
-# Awaiting a REST API
+<div class="font-mono text-sm font-extrabold leading-none tracking-[0.17em] text-cyan-300">1st Use Case</div>
 
-<div class="mt-[1.3rem] max-w-[820px] text-[1.45rem] text-slate-300">Turn “what callback comes next?” into a sequence that matches the user action.</div>
+# Hourglass App
 
----
+<div class="mt-3 text-[1.35rem] text-slate-300">Using <code class="text-cyan-500">QNetworkAccessManager</code> with Coroutines</div>
 
-# Hourglass: a small app with real async work
-
-<div class="mt-8 grid grid-cols-2 items-center gap-[2.1rem]">
-  <div class="grid grid-cols-[105px_1fr] items-center gap-[1.2rem] rounded-2xl border border-line bg-soft p-5 [&_h2]:m-0 [&_h2]:text-[1.6rem] [&_p]:mt-[0.3rem] [&_p]:mb-0 [&_p]:text-muted">
-    <div class="grid size-[100px] place-items-center rounded-3xl bg-ink text-[3.2rem] text-white">◷</div>
-    <div><h2>Hourglass</h2><p>Qt Quick companion app for tracking and booking time through a Redmine REST API.</p></div>
+<div class="absolute right-20 top-20 bottom-60 w-[40%] flex flex-col items-expand gap-1">
+  <div class="flex items-center justify-center gap-5 rounded-2xl border border-white/12 bg-white/5 px-6 py-5">
+    <img class="h-16 w-auto rounded-md bg-white px-3 py-2" :src="'/images/redmine-logo.png'" alt="Redmine" />
+    <span class="text-3xl font-light text-slate-500">+</span>
+    <div class="grid justify-items-center gap-2"><img class="size-16" src="./assets/hourglass/appicon.ico" alt="Hourglass" /><strong class="text-sm">Hourglass</strong></div>
   </div>
+  <div class="flex flex-col items-center gap-1 text-center">
+    <span class="w-px h-5 bg-gradient-to-t from-cyan-300 to-transparent"></span>
+    <span class="rounded-full border border-cyan-300/35 bg-cyan-300/8 px-3 py-2 font-mono text-[0.64rem] font-extrabold tracking-[0.08em] text-cyan-200">HTTP · REST</span>
+    <span class="w-px h-5 bg-gradient-to-b from-cyan-300 to-transparent"></span>
+  </div>
+  <div class="grid place-items-center rounded-2xl border border-white/12 bg-white/5 px-6 py-5"><img class="h-[92px] w-auto" :src="'/images/qt-logo.png'" alt="Qt" /></div>
+</div>
+
+<!--
+First use case: the Hourglass desktop and Android app. It is a Qt client for the REST API exposed by our Hourglass plugin for Redmine.
+-->
+
+---
+transition: slide-left
+---
+
+<div class="mt-6 grid grid-cols-[1fr_auto_1fr] items-stretch gap-5">
+  <section class="rounded-2xl border border-slate-300 bg-white p-5 shadow-slide-card">
+    <div class="flex h-20 items-center"><img class="max-h-16 max-w-[250px]" :src="'/images/redmine-logo.png'" alt="Redmine" /></div>
+    <h2 class="mt-4! text-[1.35rem]!">Project management</h2>
+  </section>
+  <div class="grid place-items-center text-4xl font-light text-brand-orange">+</div>
+  <section class="rounded-2xl border-2 border-brand-orange bg-orange-50 p-5 shadow-[0_12px_28px_rgb(234_88_12_/_0.1)]">
+    <div class="flex h-20 items-center gap-4"><img class="size-16" src="./assets/hourglass/appicon.ico" alt="Hourglass" /><strong class="text-2xl text-orange-900">Hourglass</strong></div>
+    <h2 class="mt-4! text-[1.35rem]! text-orange-900!">Time tracking plugin</h2>
+  </section>
+</div>
+
+<div class="mt-2 text-left text-[0.48rem] text-slate-400">Redmine logo © Martin Herr, CC BY-SA 2.5.</div>
+
+<!--
+Like most software companies, HicknHack is time constrained, so we want to understand how long each job takes. Redmine is our ticket system. We maintain the Hourglass plugin, and this app is its desktop and Android companion.
+-->
+
+---
+transition: slide-left
+---
+
+<div class="mt-7 grid grid-cols-[0.48fr_1.52fr] items-center gap-8">
+  <div class="grid place-items-center rounded-3xl bg-[#0b111b] p-8 shadow-[0_18px_38px_rgb(15_23_42_/_0.16)]"><img class="w-[210px]" :src="'/images/qt-logo.png'" alt="Qt" /></div>
   <div>
-    <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted"><strong>User presses “Start”</strong><small>the UI must remain responsive</small></div>
-    <div class="self-center text-center text-[1.8rem] font-extrabold text-brand-orange">↓</div>
-    <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted"><strong>POST tracker → maybe GET issue</strong><small>each response can fail</small></div>
+    <div class="mb-5 text-[1.55rem] font-[760] tracking-[-0.035em] text-brand-blue">A cross-platform C++ application framework</div>
+    <div class="grid grid-cols-3 gap-3 text-center text-[0.78rem] font-bold">
+      <div class="rounded-xl border border-line bg-soft p-4">GUI + QML</div>
+      <div class="rounded-xl border border-line bg-soft p-4">Files + settings</div>
+      <div class="rounded-xl border border-line bg-soft p-4">Threads + timers</div>
+      <div class="rounded-xl border border-line bg-soft p-4">Multimedia</div>
+      <div class="rounded-xl border border-line bg-soft p-4">Devices</div>
+      <div class="rounded-xl border-2 border-brand-cyan bg-cyan-50 p-4 text-cyan-900 shadow-[0_8px_20px_rgb(8_145_178_/_0.1)]">Networking</div>
+    </div>
   </div>
 </div>
 
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800">The domain story is sequential. The network API is not.</div>
+<div class="mt-7 grid grid-cols-[auto_1fr] items-center gap-4 rounded-2xl border-l-[7px] border-brand-orange bg-orange-50 px-5 py-4">
+  <div><code class="text-[1.2rem] font-bold text-brand-blue">QNetworkAccessManager</code><span class="ml-3 text-[0.9rem] text-muted">is Qt’s asynchronous HTTP client abstraction.</span></div>
+</div>
+
+<div class="mt-2 text-right text-[0.48rem] text-slate-400">Qt is a registered trademark of The Qt Company Ltd. and its subsidiaries.</div>
 
 <!--
-Introduce the concrete action: begin tracking time, update the model, and if necessary load the referenced issue. Network latency must not block the Qt event loop.
+Qt is the GUI framework, but it also abstracts a large part of the operating system. For this use case, the important abstraction is networking—and specifically QNetworkAccessManager.
 -->
 
 ---
+transition: slide-left
+---
 
-# Before: the shape belongs to callbacks
+# The concept
 
-<div class="mt-6 grid grid-cols-[1.28fr_0.72fr] items-center gap-[2.1rem]">
-<div>
-
-<<< ./snippets/compiled-patterns/main.cpp#callback-flow cpp {1-3|4-8|9-17|all}{lines:true}
-
-</div>
-<div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>Control flow</h3><p>Encoded in nesting.</p></div>
-  <div class="mt-4 rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>State</h3><p>Repeated across exit paths.</p></div>
-  <div class="mt-4 rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>Lifetime</h3><p>Hidden inside captures.</p></div>
-</div>
-</div>
-
-<div class="mt-[0.55rem] text-[0.78rem] text-muted">Runnable callback example from <code>compiled-patterns</code>; the project build executes this flow.</div>
+<HourglassAction />
 
 <!--
-Do not attack callbacks: they are a valid tool. The problem is the mismatch between the business flow and the code’s shape. Point at every place Idle must be restored and every this capture.
+[click] Start the tracker: the UI remains alive while the coroutine waits for POST.
+[click] finished() resumes the frame and applies the tracker response.
+[click] The optional issue lookup becomes a second local suspension point.
+[click] The same function returns the model to Idle. Point out that no native thread was occupied while the frame was suspended.
 -->
 
 ---
+transition: slide-left
+---
 
-# The state machine is already here
+<div class="mt-7 grid grid-cols-[0.82fr_0.48fr] items-center gap-7">
+  <div class="flex flex-col gap-5">
 
-<div class="mt-[1.4rem] flex items-stretch gap-[0.7rem]">
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>WRITING</strong><small>POST in flight</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>APPLY</strong><small>update tracker</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>RESOLVE?</strong><small>maybe GET issue</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>IDLE</strong><small>or stale on error</small></div>
+<<< ./snippets/qnetwork-access-manager.cpp#qnam-api cpp {3}{lines:true}
+
+<<< ./snippets/qnetwork-access-manager.cpp#qnam-start cpp {0|2|3-5}{lines:true}
+
+  </div>
+  <div class="grid gap-5">
+    <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border border-line bg-soft p-3" v-click="1"><span class="grid size-11 place-items-center rounded-full bg-brand-blue font-mono font-black text-white">1</span><div><strong class="text-lg text-brand-blue">Call <code>get(request)</code></strong><span class="mt-1 block text-muted">Queue work</span></div></div>
+    <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border border-line bg-soft p-3" v-click="1"><span class="grid size-11 place-items-center rounded-full bg-brand-orange font-mono font-black text-white">2</span><div><strong class="text-lg text-brand-blue">Receive <code>QNetworkReply</code></strong><span class="mt-1 block text-muted">Future for the work.</span></div></div>
+    <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border-2 border-brand-cyan bg-cyan-50 p-3" v-click="3"><span class="grid size-11 place-items-center rounded-full bg-brand-cyan font-mono font-black text-white">3</span><div><strong class="text-lg text-cyan-900">Signal <code>finished()</code></strong><span class="mt-1 block text-cyan-900/65">Called when done.</span></div></div>
+  </div>
 </div>
 
-<div class="mt-[2.2rem] max-w-[970px] text-[2.3rem] font-[760] tracking-[-0.04em] leading-[1.07]" v-click>The compiler can carry the “where was I?” state for us.</div>
-
 <!--
-This is the low-hanging-fruit test: if you already draw a state machine to explain callback progression, a coroutine may give you that state machine in a readable function.
+[click] Call get with a request.
+[click] The return value is a QNetworkReply pointer, but the response is not ready yet.
+[click] Completion arrives later as a Qt signal. The UI thread remains available to process input and paint.
 -->
 
 ---
+transition: slide-left
+---
 
-# The idea: make a reply awaitable
+# Callback
 
-<div class="mt-7 grid grid-cols-[0.76fr_1.24fr] items-center gap-[2.1rem]">
+<div class="mt-4 grid grid-cols-[1.24fr_0.76fr] items-start gap-5">
   <div>
-    <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted"><strong>QNetworkReply</strong><small>emits finished()</small></div>
-    <div class="self-center text-center text-[1.8rem] font-extrabold text-brand-orange">↓</div>
-    <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted"><strong>awaitable adapter</strong><small>resumes coroutine handle</small></div>
+
+<<< ./snippets/qnetwork-access-manager.cpp#qnam-response cpp {0|2-5|6-10|11-16|17|18}{lines:true}
+
   </div>
-  <div>
-
-<<< ./snippets/slide-projects/hourglass-app2/src/Hourglass/Model/NetworkTask.h#qt-reply-await-bridge cpp {1|4-7|all}{lines:true}
-
+  <div class="grid gap-3 pt-1">
+    <div class="rounded-xl border border-line bg-soft px-4 py-3" v-click="1"><b class="text-brand-blue">Error Handling</b></div>
+    <div class="rounded-xl border border-line bg-soft px-4 py-3" v-click="2"><b class="text-brand-blue">HTTP Status</b></div>
+    <div class="rounded-xl border border-line bg-soft px-4 py-3" v-click="3"><b class="text-brand-blue">Parse JSON</b></div>
+    <div class="rounded-xl border border-line bg-soft px-4 py-3" v-click="4"><b class="text-brand-blue">Handle Data</b></div>
+    <div class="rounded-xl border-2 border-brand-orange bg-orange-50 px-4 py-3" v-click="5"><b class="text-orange-900">2nd request?</b><small class="mt-1 block text-orange-900/65">keep <code>reply</code> alive</small></div>
   </div>
 </div>
 
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800">The Qt signal remains. It is contained at one boundary instead of shaping every caller.</div>
-
 <!--
-This is the minimum interesting plumbing. await_ready handles an already-finished reply. await_suspend connects completion to resume. await_resume turns the result into the type the domain code wants.
+[click] Transport errors belong to the reply.
+[click] HTTP failure is a separate protocol layer.
+[click] A successful HTTP body can still fail JSON parsing.
+[click] Only then process the value and decide what runs next—while also managing reply lifetime. One request has accumulated five reader concerns.
 -->
 
 ---
+transition: slide-left
+---
 
-# After: the shape belongs to the use case
+# CoRoutine Machinery
 
-<<< ./snippets/slide-projects/hourglass-app2/src/Hourglass/Model/RedmineAccount.cpp#start-time-tracker-coroutine cpp {1-3|4-11|13-20|22}{lines:true}
-
-<div class="mt-[0.55rem] text-[0.78rem] text-muted">Imported directly from the compiling Hourglass project: <code>RedmineAccount.cpp::startTimeTrackerImpl</code>.</div>
+<<< ./snippets/hourglass-reply-await-bridge.cpp cpp {2|3-5,23|6-7,20-21|9|12-13|16-18}{lines:true}
 
 <!--
-[click] Establish state.
-[click] Await the POST and handle failure beside it.
-[click] Optionally await the issue lookup.
-[click] Finish in Idle. We can review this in domain order.
+The Qt API still emits finished().
+[click] One narrow adapter connects that signal to the saved coroutine handle.
+[click] Domain code sees an awaitable operation. The callback did not disappear—it stopped shaping every caller.
+[click] await_ready preserves the fast path when the reply has already completed.
+[click] await_suspend is the entire signal-to-resume bridge. This excerpt only reformats the real NetworkTask.h lines to fit the projector; the production await_resume converts network, HTTP, and JSON outcomes into NetworkResponse.
 -->
 
 ---
+transition: slide-left
+---
 
-# What code was actually necessary?
+# Now the refresh policy reads top to bottom
 
-<div class="mt-10 grid grid-cols-3 gap-[1.2rem]">
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><div class="text-[2.7rem] font-extrabold text-brand-blue">1</div><h2>Task type</h2><p>Owns the coroutine handle and completion policy.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><div class="text-[2.7rem] font-extrabold text-brand-blue">1</div><h2>Awaitable</h2><p>Bridges <code>finished()</code> to <code>resume()</code>.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><div class="text-[2.7rem] font-extrabold text-brand-blue">N</div><h2>Clear flows</h2><p>Every REST operation gets ordinary control flow.</p></div>
+<<< ./snippets/qnetwork-access-manager.cpp#refresh-coroutine cpp {0|1-2|4-6|8-10|12-14|16}{lines:true}
+
+<div class="mt-3 grid grid-cols-5 gap-2 text-[0.68rem] font-bold">
+  <div class="rounded-lg border-l-4 border-brand-blue bg-slate-100 px-3 py-2"><span class="text-muted">01</span> Updating</div>
+  <div class="rounded-lg border-l-4 border-brand-orange bg-orange-50 px-3 py-2"><span class="text-muted">02</span> Current user</div>
+  <div class="rounded-lg border-l-4 border-brand-orange bg-orange-50 px-3 py-2"><span class="text-muted">03</span> Activities</div>
+  <div class="rounded-lg border-l-4 border-brand-orange bg-orange-50 px-3 py-2"><span class="text-muted">04</span> Tracker</div>
+  <div class="rounded-lg border-l-4 border-brand-green bg-emerald-50 px-3 py-2"><span class="text-muted">05</span> Live</div>
 </div>
 
-<div class="mt-12 border-l-[7px] border-brand-orange pl-[1.2rem] text-[1.7rem] font-[650] leading-[1.25]" v-click>Pay the integration cost once, near the async API.</div>
+<div class="mt-2 flex items-center gap-2 text-[0.7rem] text-muted"><span class="i-carbon-document"></span> The coroutine version from the sketch, with names shortened for the projector.</div>
 
 <!--
-Be honest: coroutines are not free of machinery. The leverage comes from centralizing it. NetworkTask is the policy, the awaitable is the bridge, and the account methods are the beneficiaries.
+[click] Establish the updating state.
+[click] Await and apply the current user; its failure path stays beside it.
+[click] Do the same for activities.
+[click] Do the same for the active tracker, including the expected not-found case.
+[click] Mark the account live. Three network waits now read as one refresh policy.
 -->
 
 ---
+transition: fade-out
+---
 
-# Example 01: what changed for the reader?
+# Small boundary. Repeated leverage.
 
-| Question during review     | Callback version               | Coroutine version             |
-| -------------------------- | ------------------------------ | ----------------------------- |
-| What happens next?         | Follow the registered callback | Read the next statement       |
-| Where is failure handled?  | Search each branch             | Beside the awaited operation  |
-| What state survives?       | Inspect captures               | Inspect locals and parameters |
-| Where can execution pause? | Know the API                   | Find `co_await`               |
+<div class="mt-7 grid grid-cols-[0.78fr_auto_1.22fr] items-center gap-6">
+  <div class="grid grid-cols-2 gap-3">
+    <div class="rounded-2xl border-2 border-brand-cyan bg-cyan-50 p-5 text-center" v-click>
+      <div class="text-[3.5rem] font-black leading-none text-brand-blue">1</div>
+      <h2 class="mt-2! text-[1rem]!">task policy</h2>
+      <p class="m-0! text-[0.72rem] text-muted">owns the frame</p>
+    </div>
+    <div class="rounded-2xl border-2 border-brand-cyan bg-cyan-50 p-5 text-center" v-click>
+      <div class="text-[3.5rem] font-black leading-none text-brand-blue">1</div>
+      <h2 class="mt-2! text-[1rem]!">reply awaiter</h2>
+      <p class="m-0! text-[0.72rem] text-muted">bridges the signal</p>
+    </div>
+  </div>
 
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800">The win is not fewer characters. It is fewer places the reader must keep in their head.</div>
+  <div class="flex flex-col items-center gap-2 text-brand-orange" v-click>
+    <span class="font-mono text-[0.62rem] font-extrabold tracking-[0.1em]">UNLOCKS</span>
+    <span class="i-carbon-arrow-right text-4xl"></span>
+  </div>
+
+  <div class="rounded-2xl bg-[#0f172a] p-5 text-white shadow-[0_18px_35px_rgb(15_23_42_/_0.16)]" v-click>
+    <div class="flex items-end justify-between border-b border-white/12 pb-3">
+      <div><span class="text-[3.8rem] font-black leading-none text-cyan-300">7</span><span class="ml-2 text-lg font-bold">straight-line flows</span></div>
+      <span class="i-carbon-flow text-2xl text-cyan-300"></span>
+    </div>
+    <div class="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 font-mono text-[0.68rem] text-slate-300">
+      <span>refresh account</span><span>refresh time</span><span>start tracker</span><span>update tracker</span><span>stop tracker</span><span>search issues</span><span>resolve issues</span>
+    </div>
+  </div>
+</div>
+
+<div class="mt-9 border-l-[7px] border-brand-orange pl-5 text-[1.65rem] font-[700] leading-[1.2]" v-click>Pay the integration cost once—<span class="text-brand-blue">where the asynchronous API enters your code.</span></div>
 
 <!--
-Transition: now take exactly the same model—store a continuation, resume it later—and apply it somewhere with no network request at all.
+[click] One small task type owns the coroutine handle and completion policy.
+[click] One awaiter turns QNetworkReply completion into resumption.
+[click] Those two pieces support seven real REST workflows in this model today.
+[click] This is the low-hanging-benefit test: narrow plumbing at a stable boundary, repeated clarity above it.
+-->
+
+---
+class: "relative overflow-hidden [&_h1::after]:hidden"
+---
+
+# The win is not fewer characters.
+
+<div class="mt-8 grid grid-cols-2 gap-5">
+  <section class="rounded-2xl border border-slate-300 bg-slate-100 p-5 opacity-72" v-click>
+    <div class="mb-4 flex items-center justify-between"><span class="font-mono text-xs font-extrabold tracking-[0.11em] text-muted">CALLBACK REVIEW</span><span class="i-carbon-direction-loop-right text-2xl text-slate-400"></span></div>
+    <div class="grid gap-3 text-[0.9rem]">
+      <div>What callback runs next?</div>
+      <div>Which captures are still alive?</div>
+      <div>Which branch restores the state?</div>
+      <div>Where can execution pause?</div>
+    </div>
+  </section>
+  <section class="rounded-2xl border-2 border-brand-cyan bg-cyan-50 p-5 shadow-[0_14px_30px_rgb(8_145_178_/_0.12)]" v-click>
+    <div class="mb-4 flex items-center justify-between"><span class="font-mono text-xs font-extrabold tracking-[0.11em] text-brand-blue">COROUTINE REVIEW</span><span class="i-carbon-direction-straight-right text-2xl text-brand-cyan"></span></div>
+    <div class="grid gap-3 text-[0.9rem] font-semibold text-cyan-950">
+      <div>Read the next statement.</div>
+      <div>Inspect locals and parameters.</div>
+      <div>Handle failure beside the operation.</div>
+      <div>Find <code>co_await</code>.</div>
+    </div>
+  </section>
+</div>
+
+<div class="mt-8 text-center text-[2.2rem] font-[780] tracking-[-0.04em]" v-click>It is fewer <span class="relative text-brand-blue">suspended questions.<svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" aria-hidden="true"><path d="M4 8 C78 2 210 12 296 5" fill="none" stroke="#ea580c" stroke-width="5" stroke-linecap="round" /></svg></span></div>
+
+<!--
+[click] In the callback version, review questions are graph questions.
+[click] In the coroutine version, the answers are local in the function.
+[click] The value is not a source-line contest; it is reducing the number of unresolved questions the reader carries. Now reuse the same continuation idea somewhere with no network request at all.
 -->
 
 ---

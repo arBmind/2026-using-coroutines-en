@@ -49,44 +49,38 @@ const withResult = withResume.replace(
 const steps = [
   {
     code: synchronous,
-    keyword: "baseline",
-    explanation:
-      "The caller receives a string only after loadProfile has finished.",
-    lines: [] as number[],
+    title: "baseline",
+    explanation: "Start with regular C++.",
+    lines: [1, 7],
   },
   {
     code: withTask,
-    keyword: "task<string>",
-    explanation:
-      "Return a resumable operation immediately; the caller keeps that task.",
+    title: "task<string>",
+    explanation: "Coroutine enabled return type.",
     lines: [1, 7],
   },
   {
     code: withAwait,
-    keyword: "co_await",
-    explanation:
-      "Suspend greeting when the profile is not ready, without blocking the thread.",
+    title: "co_await",
+    explanation: "Await something.",
     lines: [2],
   },
   {
     code: withReturn,
-    keyword: "co_return",
-    explanation:
-      "Store the greeting in the coroutine promise instead of returning through this stack call.",
+    title: "co_return",
+    explanation: "Replace return.",
     lines: [3],
   },
   {
     code: withResume,
-    keyword: "resume",
-    explanation:
-      "Supply the completed profile and continue the suspended coroutine frame.",
+    title: "resume",
+    explanation: "Emulate a runtime.",
     lines: [8],
   },
   {
     code: withResult,
-    keyword: "result",
-    explanation:
-      "Once the task is complete, read the value stored by co_return.",
+    title: "result",
+    explanation: "Extract from task.",
     lines: [9],
   },
 ];
@@ -127,7 +121,7 @@ const current = computed(() => steps[step.value]);
 </script>
 
 <template>
-  <div class="mt-5">
+  <div class="mt-4 flex flex-col gap-4">
     <div
       class="relative overflow-hidden rounded-xl border border-slate-300 bg-[#f7f7f8] shadow-slide-card"
       :class="{ 'is-animating': animating }"
@@ -168,16 +162,15 @@ const current = computed(() => steps[step.value]);
     </div>
 
     <div
-      class="mt-[0.85rem] grid min-h-16 grid-cols-[auto_auto_1fr] items-center gap-3 rounded-xl bg-cyan-50 px-4 py-[0.8rem] text-[0.9rem] font-[650] text-cyan-800"
+      class="col-span-full grid min-h-[58px] grid-cols-[auto_auto_1fr] items-center gap-4 rounded-xl bg-slate-900 px-[0.9rem] py-[0.7rem]"
     >
-      <span
-        class="font-mono text-xs font-extrabold leading-none text-brand-orange"
+      <span class="font-mono text-base leading-none text-orange-300"
         >{{ step }}/{{ steps.length - 1 }}</span
       >
-      <code class="rounded-md bg-slate-900 px-[0.45rem] py-1 text-cyan-300">{{
-        current.keyword
-      }}</code>
-      <span>{{ current.explanation }}</span>
+      <strong class="text-base text-cyan-300">{{ current.title }}</strong>
+      <span class="m-0 text-base text-slate-300">{{
+        current.explanation
+      }}</span>
     </div>
   </div>
 </template>

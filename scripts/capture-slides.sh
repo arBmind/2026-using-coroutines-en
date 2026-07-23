@@ -38,4 +38,5 @@ fi
 node scripts/capture-slides.mjs \
   --base-url "http://localhost:${port}" \
   --output "$output_dir" \
-  --slides src/slides.md
+  --slides src/slides.md \
+  "$@"

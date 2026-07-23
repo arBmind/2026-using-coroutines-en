@@ -11,6 +11,7 @@
     }
   },
   "mounts": [
+    "source=${localWorkspaceFolder},target=/workspaces/2026-11_UsingCoroutines,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.codex,target=/home/node/.codex,type=bind,consistency=delegated"
   ],
   "postCreateCommand": "npm install && npx playwright install chromium && src/snippets/build.sh",
@@ -22,7 +23,8 @@
         "llvm-vs-code-extensions.vscode-clangd",
         "ms-vscode.cpptools",
         "openai.chatgpt",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "gxl.git-graph-3"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
