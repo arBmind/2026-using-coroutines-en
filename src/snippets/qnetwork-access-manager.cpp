@@ -19,14 +19,13 @@ QObject::connect(reply, &QNetworkReply::finished, [reply]() {
         networkError != QNetworkReply::NoError) {
         // Handle transport failure.
     }
-    if (auto httpStatus = reply->attribute(
-            QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    using enum QNetworkRequest::Attribute;
+    if (auto httpStatus = reply->attribute(HttpStatusCodeAttribute).toInt();
         httpStatus < 200 || httpStatus >= 300) {
         // Handle HTTP failure.
     }
     auto parseError = QJsonParseError{};
-    auto jsonDocument = QJsonDocument::fromJson(
-        reply->readAll(), &parseError);
+    auto jsonDocument = QJsonDocument::fromJson(reply->readAll(), &parseError);
     if (parseError.error != QJsonParseError::NoError) {
         // Handle malformed JSON.
     }

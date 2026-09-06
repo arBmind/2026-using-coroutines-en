@@ -26,10 +26,7 @@ function extractRegion(source: string, name: string) {
 }
 
 const synchronous = extractRegion(synchronousSource, "synchronous-flow");
-const withTask = synchronous
-  .replace("-> string {", "-> task<string> {")
-  .replace('auto message = greeting("C++");', 'auto task = greeting("C++");');
-const withAwait = withTask.replace(
+const withAwait = synchronous.replace(
   "auto profile = loadProfile(id);",
   "auto profile = co_await loadProfile(id);",
 );
@@ -37,7 +34,10 @@ const withReturn = withAwait.replace(
   'return format("Hello {}", profile.userName);',
   'co_return format("Hello {}", profile.userName);',
 );
-const withResume = withReturn.replace(
+const withTask = withReturn
+  .replace("-> string {", "-> task<string> {")
+  .replace('auto message = greeting("C++");', 'auto task = greeting("C++");');
+const withResume = withTask.replace(
   '\n    println("{}!", message);',
   '\n    task.resume(Profile{.userName = "Meeting C++ 2026"});\n    println("{}!", message);',
 );
@@ -54,12 +54,6 @@ const steps = [
     lines: [1, 7],
   },
   {
-    code: withTask,
-    title: "task<string>",
-    explanation: "Coroutine enabled return type.",
-    lines: [1, 7],
-  },
-  {
     code: withAwait,
     title: "co_await",
     explanation: "Await something.",
@@ -70,6 +64,12 @@ const steps = [
     title: "co_return",
     explanation: "Replace return.",
     lines: [3],
+  },
+  {
+    code: withTask,
+    title: "task<string>",
+    explanation: "Coroutine enabled return type.",
+    lines: [1, 7],
   },
   {
     code: withResume,

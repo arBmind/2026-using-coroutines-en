@@ -28,9 +28,10 @@ drawings:
 
 <div class="grid h-full grid-cols-[1.1fr_0.9fr]">
   <div class="flex flex-col justify-center pt-[4.5rem] pr-12 pb-36 pl-[4.4rem]">
-    <div class="text-[0.78rem] font-extrabold tracking-[0.14em] text-brand-orange uppercase">Meeting C++ 2026</div>
+    <div class="hidden text-[0.78rem] font-extrabold tracking-[0.14em] text-brand-orange uppercase">Meeting C++ 2026</div>
+    <div class="text-[0.78rem] font-extrabold tracking-[0.14em] text-brand-orange uppercase">C++ Usergroup Dresden 2026</div>
     <h1 class="max-w-[700px] text-hero! leading-[0.94]!">C++20 Coroutines<br />in Action</h1>
-    <div class="mt-[1.2rem] text-[1.35rem] font-[650] text-brand-blue">Grab the low-hanging benefits—without building a framework</div>
+    <div class="mt-[1.2rem] text-[1.35rem] font-[650] text-brand-blue">Grab the low-hanging benefits without building a framework</div>
     <div class="mt-4 text-[1.1rem] font-bold">Andreas Reischuck</div>
   </div>
   <div class="relative">
@@ -98,40 +99,37 @@ Without any plumbing
 
 ---
 
+# The <code>Awaiter</code> interface
+
+<div style="--prism-font-size:1.4em">
+
+<<< ./snippets/coroutine-introduction/awaiter.cpp#awaiter cpp {3|7,10,13|16}{lines:true}
+
+</div>
+
+---
+
 # <code>Awaiter</code>: Choose who runs next
 
-<div class="mt-[1.05rem] grid grid-cols-[1.18fr_0.82fr] items-start gap-[1.15rem]">
-  <section class="grid gap-[0.65rem]">
-    <div class="grid min-h-[104px] grid-cols-[1fr_135px] items-center gap-3 rounded-xl border border-line border-l-[7px] border-l-slate-500 bg-soft px-[0.8rem] py-[0.65rem]" v-click>
-      <div class="font-mono text-base font-bold leading-[1.35] whitespace-nowrap [&_span]:text-violet-700 [&_b]:font-bold [&_b]:text-red-600"><span>Handle</span> await_suspend(<span>Handle</span> continuation) {<br>
+<div class="mt-[1.05rem] grid items-start gap-[1.15rem]">
+  <section class="grid gap-[0.65rem] text-[1.4em]">
+    <div class="grid min-h-[104px] grid-cols-[1fr_350px] items-center gap-3 rounded-xl border border-line border-l-[7px] border-l-slate-500 bg-soft px-[0.8rem] py-[0.65rem]" v-click>
+      <div class="font-mono font-bold leading-[1.35] whitespace-nowrap [&_span]:text-violet-700 [&_b]:font-bold [&_b]:text-red-600"><span>Handle</span> await_suspend(<span>Handle</span> continuation) {<br>
       &nbsp;&nbsp;<b>return</b> std::noop_coroutine();<br>
       }</div>
-      <div class="grid gap-1 rounded-lg bg-white p-[0.55rem] text-center [&_span]:text-[0.62rem] [&_span]:font-bold [&_span]:text-muted [&_span]:uppercase [&_strong]:text-[0.76rem] [&_strong]:leading-[1.15] [&_strong]:text-brand-blue"><span>Next:</span><strong>last resumer</strong></div>
+      <div class="grid gap-1 rounded-lg bg-white p-[0.55rem] text-center [&_span]:text-[1rem] [&_span]:font-bold [&_span]:text-muted [&_span]:uppercase [&_strong]:leading-[1.15] [&_strong]:text-brand-blue"><span>Next:</span><strong>last resumer</strong></div>
     </div>
-    <div class="grid min-h-[104px] grid-cols-[1fr_135px] items-center gap-3 rounded-xl border border-line border-l-[7px] border-l-brand-cyan bg-soft px-[0.8rem] py-[0.65rem]" v-click>
-      <div class="font-mono text-base font-bold leading-[1.35] whitespace-nowrap [&_span]:text-violet-700 [&_b]:font-bold [&_b]:text-red-600"><span>Handle</span> await_suspend(<span>Handle</span> continuation) {<br>
+    <div class="grid min-h-[104px] grid-cols-[1fr_350px] items-center gap-3 rounded-xl border border-line border-l-[7px] border-l-brand-cyan bg-soft px-[0.8rem] py-[0.65rem]" v-click>
+      <div class="font-mono font-bold leading-[1.35] whitespace-nowrap [&_span]:text-violet-700 [&_b]:font-bold [&_b]:text-red-600"><span>Handle</span> await_suspend(<span>Handle</span> continuation) {<br>
       &nbsp;&nbsp;<b>return</b> continuation;<br>
       }</div>
-      <div class="grid gap-1 rounded-lg bg-white p-[0.55rem] text-center [&_span]:text-[0.62rem] [&_span]:font-bold [&_span]:text-muted [&_span]:uppercase [&_strong]:text-[0.76rem] [&_strong]:leading-[1.15] [&_strong]:text-brand-blue"><span>Next:</span><strong>co_await calling coroutine</strong></div>
+      <div class="grid gap-1 rounded-lg bg-white p-[0.55rem] text-center [&_span]:text-[1rem] [&_span]:font-bold [&_span]:text-muted [&_span]:uppercase [&_strong]:leading-[1.15] [&_strong]:text-brand-blue"><span>Next:</span><strong>co_await calling coroutine</strong></div>
     </div>
-    <div class="grid min-h-[104px] grid-cols-[1fr_135px] items-center gap-3 rounded-xl border border-line border-l-[7px] border-l-brand-green bg-soft px-[0.8rem] py-[0.65rem]" v-click>
-      <div class="font-mono text-base font-bold leading-[1.35] whitespace-nowrap [&_span]:text-violet-700 [&_b]:font-bold [&_b]:text-red-600"><span>Handle</span> await_suspend(<span>Handle</span> continuation) {<br>
+    <div class="grid min-h-[104px] grid-cols-[1fr_350px] items-center gap-3 rounded-xl border border-line border-l-[7px] border-l-brand-green bg-soft px-[0.8rem] py-[0.65rem]" v-click>
+      <div class="font-mono font-bold leading-[1.35] whitespace-nowrap [&_span]:text-violet-700 [&_b]:font-bold [&_b]:text-red-600"><span>Handle</span> await_suspend(<span>Handle</span> continuation) {<br>
       &nbsp;&nbsp;<b>return</b> otherCoroutine;<br>
       }</div>
-      <div class="grid gap-1 rounded-lg bg-white p-[0.55rem] text-center [&_span]:text-[0.62rem] [&_span]:font-bold [&_span]:text-muted [&_span]:uppercase [&_strong]:text-[0.76rem] [&_strong]:leading-[1.15] [&_strong]:text-brand-blue"><span>Next:</span><strong>other coroutine</strong></div>
-    </div>
-  </section>
-
-  <section class="relative grid min-h-[342px] gap-[0.35rem] rounded-[14px] border-2 border-slate-400 bg-slate-50 px-4 pt-[1.6rem] pb-[0.8rem]">
-    <div class="absolute inset-x-[0.65rem] top-[0.35rem] flex justify-between text-[0.58rem] font-extrabold tracking-[0.08em] text-slate-500"><span>NATIVE STACK · INSIDE await_suspend</span></div>
-    <div class="grid min-h-[54px] grid-cols-[0.6fr_1.4fr] items-center gap-[0.45rem] rounded-[9px] border-l-6 border-brand-orange bg-orange-50 px-[0.7rem] py-[0.55rem] shadow-[0_5px_14px_rgb(15_23_42_/_0.08)] [&_strong]:text-[0.82rem] [&_strong]:text-brand-blue [&_code]:text-base [&_code]:font-bold [&_code]:text-slate-800">
-      <strong>awaiter</strong><code>await_suspend(continuation)</code>
-    </div>
-    <div class="grid min-h-[54px] grid-cols-[0.6fr_1.4fr] items-center gap-[0.45rem] rounded-[9px] border-l-6 border-brand-cyan bg-white px-[0.7rem] py-[0.55rem] shadow-[0_5px_14px_rgb(15_23_42_/_0.08)] [&_strong]:text-[0.82rem] [&_strong]:text-brand-blue [&_code]:text-base [&_code]:font-bold [&_code]:text-slate-800">
-      <strong>coroutine</strong><code>co_await Awaiter{};</code>
-    </div>
-    <div class="grid min-h-[54px] grid-cols-[0.6fr_1.4fr] items-center gap-[0.45rem] rounded-[9px] border-l-6 border-brand-green bg-white px-[0.7rem] py-[0.55rem] shadow-[0_5px_14px_rgb(15_23_42_/_0.08)] [&_strong]:text-[0.82rem] [&_strong]:text-brand-blue [&_code]:text-base [&_code]:font-bold [&_code]:text-slate-800">
-      <strong>last resumer</strong><code>coroutine.resume()</code>
+      <div class="grid gap-1 rounded-lg bg-white p-[0.55rem] text-center [&_span]:text-[1rem] [&_span]:font-bold [&_span]:text-muted [&_span]:uppercase [&_strong]:leading-[1.15] [&_strong]:text-brand-blue"><span>Next:</span><strong>other coroutine</strong></div>
     </div>
   </section>
 </div>
@@ -152,10 +150,10 @@ The coroutine machinery evaluates resume on the returned handle. Do not return a
   <img class="m-auto max-h-[430px] drop-shadow-[0_12px_18px_rgb(15_23_42_/_0.18)]" :src="'/images/andreas.png'" alt="Andreas Reischuck" />
   <div>
     <div class="max-w-[970px] text-[2.55rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic">I like code that says what it is <em>trying to do.</em></div>
-    <div class="mt-[1.2rem] grid gap-3">
-      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.35rem] text-brand-orange">⌁</span><span>C++ developer and software architect</span></div>
-      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.35rem] text-brand-orange">◫</span><span>Builder of tools people use every day</span></div>
-      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.35rem] text-brand-orange">✦</span><span>Host, trainer, and C++ community enthusiast</span></div>
+    <div class="mt-[1.2rem] grid gap-3 text-[1.4em]">
+      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">⌁</span><span>C++ developer and software architect</span></div>
+      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">◫</span><span>Builder of tools people use every day</span></div>
+      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">✦</span><span>Host, trainer, and C++ community enthusiast</span></div>
     </div>
   </div>
 </div>
@@ -171,7 +169,7 @@ class: "relative overflow-hidden flex flex-col justify-center bg-[#0b111b] text-
 
 <div class="absolute right-20 bottom-6 font-mono text-[10rem] font-black leading-none text-white/3">01</div>
 
-<div class="font-mono text-sm font-extrabold leading-none tracking-[0.17em] text-cyan-300">1st Use Case</div>
+<div class="font-mono text-base font-extrabold leading-none tracking-[0.17em] text-cyan-300">1st Use Case</div>
 
 # Hourglass App
 
@@ -185,7 +183,7 @@ class: "relative overflow-hidden flex flex-col justify-center bg-[#0b111b] text-
   </div>
   <div class="flex flex-col items-center gap-1 text-center">
     <span class="w-px h-5 bg-gradient-to-t from-cyan-300 to-transparent"></span>
-    <span class="rounded-full border border-cyan-300/35 bg-cyan-300/8 px-3 py-2 font-mono text-[0.64rem] font-extrabold tracking-[0.08em] text-cyan-200">HTTP · REST</span>
+    <span class="rounded-full border border-cyan-300/35 bg-cyan-300/8 px-3 py-2 font-mono text-[1rem] font-extrabold tracking-[0.08em] text-cyan-200">HTTP · REST</span>
     <span class="w-px h-5 bg-gradient-to-b from-cyan-300 to-transparent"></span>
   </div>
   <div class="grid place-items-center rounded-2xl border border-white/12 bg-white/5 px-6 py-5"><img class="h-[92px] w-auto" :src="'/images/qt-logo.png'" alt="Qt" /></div>
@@ -290,12 +288,12 @@ transition: slide-left
 transition: slide-left
 ---
 
-# Callback
+# Callback Implementation
 
-<div class="mt-4 grid grid-cols-[1.24fr_0.76fr] items-start gap-5">
-  <div>
+<div class="mt-4 grid grid-cols-[auto_auto] items-start gap-5">
+  <div style="--prism-font-size:1.3em ">
 
-<<< ./snippets/qnetwork-access-manager.cpp#qnam-response cpp {0|2-5|6-10|11-16|17|18}{lines:true}
+<<< ./snippets/qnetwork-access-manager.cpp#qnam-response cpp {0|2-5|6-10|11-15|16|17}{lines:true}
 
   </div>
   <div class="grid gap-3 pt-1">
@@ -316,37 +314,34 @@ transition: slide-left
 
 ---
 transition: slide-left
+class: code-slide
 ---
 
 # CoRoutine Machinery
 
-<<< ./snippets/hourglass-reply-await-bridge.cpp cpp {2|3-5,23|6-7,20-21|9|12-13|16-18}{lines:true}
+<AwaiterMachinery />
 
 <!--
-The Qt API still emits finished().
-[click] One narrow adapter connects that signal to the saved coroutine handle.
-[click] Domain code sees an awaitable operation. The callback did not disappear—it stopped shaping every caller.
+The NetworkTask stores the coroutine handle that can continue it.
+[click] The promise intercepts QNetworkReply and turns it into something co_await can use.
+[click] One narrow Awaiter owns the reply boundary. The callback does not disappear—it stops shaping every caller.
 [click] await_ready preserves the fast path when the reply has already completed.
-[click] await_suspend is the entire signal-to-resume bridge. This excerpt only reformats the real NetworkTask.h lines to fit the projector; the production await_resume converts network, HTTP, and JSON outcomes into NetworkResponse.
+[click] await_suspend is the entire signal-to-resume bridge: finished() invokes the saved handle.
+[click] await_resume runs after continuation and converts network, HTTP, and JSON outcomes into the domain response. This excerpt reformats the real NetworkTask.h to fit the projector.
+[click] Finish with the whole adapter in view: the task hook, the three Awaiter methods, and the returned Awaiter all fit together.
 -->
 
 ---
 transition: slide-left
 ---
 
-# Now the refresh policy reads top to bottom
+# Usage
+
+<div style="--prism-font-size:1.2em">
 
 <<< ./snippets/qnetwork-access-manager.cpp#refresh-coroutine cpp {0|1-2|4-6|8-10|12-14|16}{lines:true}
 
-<div class="mt-3 grid grid-cols-5 gap-2 text-[0.68rem] font-bold">
-  <div class="rounded-lg border-l-4 border-brand-blue bg-slate-100 px-3 py-2"><span class="text-muted">01</span> Updating</div>
-  <div class="rounded-lg border-l-4 border-brand-orange bg-orange-50 px-3 py-2"><span class="text-muted">02</span> Current user</div>
-  <div class="rounded-lg border-l-4 border-brand-orange bg-orange-50 px-3 py-2"><span class="text-muted">03</span> Activities</div>
-  <div class="rounded-lg border-l-4 border-brand-orange bg-orange-50 px-3 py-2"><span class="text-muted">04</span> Tracker</div>
-  <div class="rounded-lg border-l-4 border-brand-green bg-emerald-50 px-3 py-2"><span class="text-muted">05</span> Live</div>
 </div>
-
-<div class="mt-2 flex items-center gap-2 text-[0.7rem] text-muted"><span class="i-carbon-document"></span> The coroutine version from the sketch, with names shortened for the projector.</div>
 
 <!--
 [click] Establish the updating state.
@@ -360,80 +355,20 @@ transition: slide-left
 transition: fade-out
 ---
 
-# Small boundary. Repeated leverage.
+# Hourglass App Summary
 
-<div class="mt-7 grid grid-cols-[0.78fr_auto_1.22fr] items-center gap-6">
-  <div class="grid grid-cols-2 gap-3">
-    <div class="rounded-2xl border-2 border-brand-cyan bg-cyan-50 p-5 text-center" v-click>
-      <div class="text-[3.5rem] font-black leading-none text-brand-blue">1</div>
-      <h2 class="mt-2! text-[1rem]!">task policy</h2>
-      <p class="m-0! text-[0.72rem] text-muted">owns the frame</p>
-    </div>
-    <div class="rounded-2xl border-2 border-brand-cyan bg-cyan-50 p-5 text-center" v-click>
-      <div class="text-[3.5rem] font-black leading-none text-brand-blue">1</div>
-      <h2 class="mt-2! text-[1rem]!">reply awaiter</h2>
-      <p class="m-0! text-[0.72rem] text-muted">bridges the signal</p>
-    </div>
-  </div>
-
-  <div class="flex flex-col items-center gap-2 text-brand-orange" v-click>
-    <span class="font-mono text-[0.62rem] font-extrabold tracking-[0.1em]">UNLOCKS</span>
-    <span class="i-carbon-arrow-right text-4xl"></span>
-  </div>
-
-  <div class="rounded-2xl bg-[#0f172a] p-5 text-white shadow-[0_18px_35px_rgb(15_23_42_/_0.16)]" v-click>
-    <div class="flex items-end justify-between border-b border-white/12 pb-3">
-      <div><span class="text-[3.8rem] font-black leading-none text-cyan-300">7</span><span class="ml-2 text-lg font-bold">straight-line flows</span></div>
-      <span class="i-carbon-flow text-2xl text-cyan-300"></span>
-    </div>
-    <div class="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 font-mono text-[0.68rem] text-slate-300">
-      <span>refresh account</span><span>refresh time</span><span>start tracker</span><span>update tracker</span><span>stop tracker</span><span>search issues</span><span>resolve issues</span>
-    </div>
-  </div>
-</div>
-
-<div class="mt-9 border-l-[7px] border-brand-orange pl-5 text-[1.65rem] font-[700] leading-[1.2]" v-click>Pay the integration cost once—<span class="text-brand-blue">where the asynchronous API enters your code.</span></div>
+<ul class="mt-32! grid gap-5 pl-8">
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Use existing Qt Networking</strong></li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Qt Signal/Slot as Co-Routine Runtime</strong></li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Minimal Infrastructure needed</strong></li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Readable Network Orchestration</strong></li>
+</ul>
 
 <!--
-[click] One small task type owns the coroutine handle and completion policy.
-[click] One awaiter turns QNetworkReply completion into resumption.
-[click] Those two pieces support seven real REST workflows in this model today.
-[click] This is the low-hanging-benefit test: narrow plumbing at a stable boundary, repeated clarity above it.
--->
-
----
-class: "relative overflow-hidden [&_h1::after]:hidden"
----
-
-# The win is not fewer characters.
-
-<div class="mt-8 grid grid-cols-2 gap-5">
-  <section class="rounded-2xl border border-slate-300 bg-slate-100 p-5 opacity-72" v-click>
-    <div class="mb-4 flex items-center justify-between"><span class="font-mono text-xs font-extrabold tracking-[0.11em] text-muted">CALLBACK REVIEW</span><span class="i-carbon-direction-loop-right text-2xl text-slate-400"></span></div>
-    <div class="grid gap-3 text-[0.9rem]">
-      <div>What callback runs next?</div>
-      <div>Which captures are still alive?</div>
-      <div>Which branch restores the state?</div>
-      <div>Where can execution pause?</div>
-    </div>
-  </section>
-  <section class="rounded-2xl border-2 border-brand-cyan bg-cyan-50 p-5 shadow-[0_14px_30px_rgb(8_145_178_/_0.12)]" v-click>
-    <div class="mb-4 flex items-center justify-between"><span class="font-mono text-xs font-extrabold tracking-[0.11em] text-brand-blue">COROUTINE REVIEW</span><span class="i-carbon-direction-straight-right text-2xl text-brand-cyan"></span></div>
-    <div class="grid gap-3 text-[0.9rem] font-semibold text-cyan-950">
-      <div>Read the next statement.</div>
-      <div>Inspect locals and parameters.</div>
-      <div>Handle failure beside the operation.</div>
-      <div>Find <code>co_await</code>.</div>
-    </div>
-  </section>
-</div>
-
-<div class="mt-8 text-center text-[2.2rem] font-[780] tracking-[-0.04em]" v-click>It is fewer <span class="relative text-brand-blue">suspended questions.<svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" aria-hidden="true"><path d="M4 8 C78 2 210 12 296 5" fill="none" stroke="#ea580c" stroke-width="5" stroke-linecap="round" /></svg></span></div>
-
-<!--
-[click] In the callback version, review questions are graph questions.
-[click] In the coroutine version, the answers are local in the function.
-[click] The value is not a source-line contest; it is reducing the number of unresolved questions the reader carries. Now reuse the same continuation idea somewhere with no network request at all.
+[click] Keep the proven Qt networking layer.
+[click] Signals and slots provide the callback that resumes the coroutine.
+[click] The adapter stays deliberately small.
+[click] The result is network orchestration that reads from top to bottom.
 -->
 
 ---
@@ -442,34 +377,32 @@ class: "flex flex-col justify-center bg-[#0b111b] text-white [&_h1]:text-section
 
 <div class="font-mono text-base font-extrabold leading-none tracking-[0.15em] text-cyan-300">EXAMPLE 02</div>
 
-# Crossing Windows threads
+# Desktop Duplicator
 
-<div class="mt-[1.3rem] max-w-[820px] text-[1.45rem] text-slate-300">Use a coroutine’s continuation as the unit of work passed through an APC.</div>
+<div class="mt-[1.3rem] max-w-[820px] text-[1.45rem] text-slate-300">Use a coroutine’s continuation across Win32 threads.</div>
 
 ---
 
-# Desktop Duplicator: the tool behind the talks
+# Desktop Duplicator
 
-<div class="mt-6 grid grid-cols-[0.76fr_1.24fr] items-center gap-[2.1rem]">
-  <div class="grid grid-cols-1 items-center gap-[1.2rem] rounded-2xl border border-line bg-soft p-5 text-center [&_h2]:m-0 [&_h2]:text-[1.6rem] [&_p]:mt-[0.3rem] [&_p]:mb-0 [&_p]:text-muted">
-    <div class="mx-auto grid size-[100px] place-items-center rounded-3xl bg-ink text-[3.2rem] text-white">▣</div>
-    <div><h2>Desktop Duplicator</h2><p>Captures part of one display and presents it elsewhere—ideal for live coding.</p></div>
-  </div>
-  <div>
-    <img class="w-full rounded-[10px] border border-line bg-white p-3" src="./snippets/desktop-duplication-cpp/docs/usage-schema.png" alt="Desktop Duplicator usage schema" />
-  </div>
-</div>
+<DesktopDuplicatorIntro />
 
 <!--
-Emotional connection: if you have watched live coding and wondered how the presenter keeps private notes while projecting only the editor, this tool exists for that.
+Start with a clean desktop and an idle projector. The duplicator begins with no application or region selected.
+[click] Open Qt Creator. The IDE includes the project tree, real-looking coroutine capture code, and its application output.
+[click] Make the IDE smaller and open presenter notes beside it. The notes remain useful locally but must stay private.
+[click] Show the transparent capture rectangle. It moves directly into place over the complete editor tab, and the beamer follows while notes and console stay private.
+[click] Move to the remote-work variant: one ultrawide monitor holds two source files side by side and a Teams call on the right.
+[click] Select the CaptureThread source pane with the same transparent rectangle. Teams shows the live region immediately.
+[click] Move and expand the rectangle over the complete pane. The Teams share follows it while the second source file, console, and rest of the desktop stay local.
 -->
 
 ---
 
-# One loop, three thread affinities
+# The Core Loop
 
 <div class="mt-[1.4rem] flex items-stretch gap-[0.7rem]">
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600 p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>CAPTURE</strong><small>acquire desktop frame</small></div>
+  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600 p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>CAPTURE</strong><small>acquire changes</small></div>
   <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
   <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-orange p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>RENDER</strong><small>update texture + draw</small></div>
   <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
@@ -477,167 +410,150 @@ Emotional connection: if you have watched live coding and wondered how the prese
   <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>↩</div>
 </div>
 
-<div class="mt-[2.2rem] max-w-[970px] text-[2.3rem] font-[760] tracking-[-0.04em] leading-[1.07]" v-click>The loop is one story. The work must execute in three places.</div>
-
 <!--
 Clarify that thread hopping is a requirement, not cleverness: capture APIs, renderer resources, and UI each have affinity. APC means Asynchronous Procedure Call: ask a target thread to execute a callback when it enters an alertable wait.
 -->
 
 ---
 
-# APC: a C callback plus one integer
+# Win32: <code>QueueUserAPC</code>
 
-<<< ./snippets/compiled-patterns/main.cpp#apc-contract cpp {1|2-5|all}{lines:true}
+<div class="apc-signature mt-7">
 
-<div class="mt-[0.55rem] text-[0.78rem] text-muted">A portable, compiling test double for the Windows APC callback-and-integer contract.</div>
+```cpp
+DWORD QueueUserAPC(
+  [in] PAPCFUNC  pfnAPC,
+  [in] HANDLE    hThread,
+  [in] ULONG_PTR dwData
+);
+```
 
-<div class="mt-7 grid grid-cols-3 gap-[1.2rem]">
-  <div class="rounded-[14px] border border-line bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>API gives us</h3><p>A function pointer and an integer-sized payload.</p></div>
-  <div class="rounded-[14px] border border-line bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>Our work needs</h3><p>Typed state with a clear owner.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>The gap</h3><p>Who allocates, invokes, and deletes?</p></div>
+</div>
+
+<div v-click class="mt-10 border-l-[7px] border-brand-orange bg-orange-50 px-7 py-6 text-[1.65rem] font-[650] leading-[1.3] text-brand-blue">
+“Adds a user-mode asynchronous procedure call (APC) object to the APC queue of the specified thread.”
+</div>
+
+<div v-click class="mt-6 font-mono text-[1.05rem] font-bold text-muted"><a href="https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-queueuserapc">Microsoft Learn</a> · callback + target thread + one pointer-sized value</div>
+
+<!--
+Start with the Win32 declaration: a callback, a target thread, and one pointer-sized value.
+[click] Use Microsoft’s definition verbatim. Queueing is a request; it does not interrupt arbitrary user-mode code.
+[click] The target thread invokes the callback when it enters an alertable wait.
+-->
+
+---
+
+# UserAPC Example
+
+<div class="apc-minimal mt-4" style="--prism-font-size:1.2rem">
+
+<<< ./snippets/apc-introduction/main.c#minimal-apc c {14|6|15|9-11|10|16}{lines:true}
+
 </div>
 
 <!--
-The Windows API is intentionally low-level. The target thread must enter an alertable wait such as SleepEx(..., TRUE). Focus on the ownership gap.
+WinMain creates the worker thread.
+[click] The worker loops in an alertable wait, which gives Windows a place to dispatch its APC queue.
+[click] WinMain queues the APC with 42 as its pointer-sized value.
+[click] Windows invokes the APC callback on the worker thread.
+[click] The callback prints the observed value and flushes stdout so redirected output is visible.
+[click] WinMain deliberately never exits; the example test kills it after observing the output.
 -->
 
 ---
+class: code-slide
+---
 
-# First improvement: make ownership explicit
+<div style="--prism-font-size:1.0rem"><!-- exact code is compiled by apc-introduction/build.sh -->
 
-<div class="mt-7 grid grid-cols-2 items-center gap-[2.1rem]">
-  <div>
+<<< ./snippets/apc-introduction/ownership.cpp#owned-apc cpp {21|22|10-12|23|13|14-16|24}{lines:true}
 
-<<< ./snippets/compiled-patterns/main.cpp#unique-apc-transfer cpp {1-2|3-5|all}{lines:true}
-
-  </div>
-  <div>
-    <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>Before queueing</h3><p><code>unique_ptr</code> owns the work.</p></div>
-    <div class="mt-4 rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>After success</h3><p>The callback must reconstruct ownership.</p></div>
-    <div class="mt-4 rounded-[14px] border border-line bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>After failure</h3><p>RAII cleans up normally.</p></div>
-  </div>
 </div>
 
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800">Safer memory, but ownership protocol still distracts from the capture loop.</div>
-
 <!--
-This is a worthwhile step. We should not pretend the only good migration jumps straight to coroutines. unique_ptr establishes explicit transfer and fixes failure cleanup.
+The adapter heap-owns every callback, keeping the ownership handoff explicit.
+[click] The PAPCFUNC-compatible thunk reconstructs the unique_ptr, invokes the functor, and destroys it on return.
+[click] The constructor creates the unique_ptr, so a failed or skipped queue operation cleans up normally.
+[click] c_parameter exposes the pointer as ULONG_PTR, and release transfers ownership away from the temporary adapter.
+[click] queueUserApc releases only after QueueUserAPC succeeds; otherwise the adapter destructor still owns and deletes the functor.
 -->
 
 ---
 
-# Second improvement: hide the callback adapter
+# Using APC for DesktopDuplicator
 
-<div class="mt-7 grid grid-cols-[1.28fr_0.72fr] items-center gap-[2.1rem]">
-  <div>
+<div style="--prism-font-size:1.0rem">
 
-<<< ./snippets/compiled-patterns/main.cpp#lambda-apc-call cpp {1-5}{lines:true}
+<<< ./snippets/apc-introduction/before-coroutines.cpp#class-apcs cpp {0|2-4|9-11|15|16|17-20}{lines:true}
 
-  </div>
-  <div>
-    <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>Better local syntax</h3><p>Typed capture replaces casts and raw deletion.</p></div>
-    <div class="mt-4 rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>Still fragmented</h3><p>Each hop ends one scope and begins another.</p></div>
-  </div>
 </div>
 
-<div class="mt-10 border-l-[7px] border-brand-orange pl-[1.2rem] text-[1.7rem] font-[650] leading-[1.25]">A lambda packages work. It does not reconnect the story.</div>
-
 <!--
-The project has a UniqueCallbackAdapter which does this carefully, including small-object storage. It is useful infrastructure. But a chain of posted lambdas still makes the whole loop hard to see.
+Git history gives us a clean before-and-after: this is the parent of commit d07fe0a, which replaced the thread dance with one C++20 coroutine.
+[click] DuplicationController owned explicit main, render, and capture thread abstractions. One comment collapses the unrelated machinery.
+[click] A captured frame became a lambda queued to the render thread through the APC wrapper.
+[click] Rendering either kicked capture directly or queued another lambda to the main thread, which updated status and kicked capture from there.
 -->
 
 ---
 
-# The coroutine frame is the work package
+# The coroutine glue
 
-<div class="mt-7 grid grid-cols-[0.76fr_1.24fr] items-center gap-[2.1rem]">
-  <div>
-    <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600 p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted"><strong>coroutine handle</strong><small>address fits in ULONG_PTR</small></div>
-    <div class="self-center text-center text-[1.8rem] font-extrabold text-brand-orange">↓ QueueUserAPC</div>
-    <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-orange p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted"><strong>resume()</strong><small>continue on target thread</small></div>
-  </div>
-  <div>
+<div style="--prism-font-size:1.1rem">
 
-<<< ./snippets/desktop-duplication-cpp/src/win32/Thread.h#resume-on-awaitable cpp {1-4|5-12|13-19|all}{lines:true}
+<<< ./snippets/slide-projects/desktop-duplication-cpp/src/win32/Thread.h#resume-on-awaitable cpp {7-10|11|12}{lines:true}
 
-  </div>
 </div>
 
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800"><code>co_await resumeOn(thread)</code> means exactly: continue this function over there.</div>
-
 <!--
-The payload is no longer a bespoke Work allocation. It is the coroutine handle—the continuation plus access to its frame. Production code must handle QueueUserAPC failure; the real implementation destroys the handle on failure.
+The APC callback reconstructs the coroutine handle and resumes it on the target thread.
+[click] await_suspend queues that callback with the handle address as its payload.
+[click] If QueueUserAPC fails, nobody can resume the suspended coroutine, so destroy its frame.
 -->
 
 ---
 
-# The loop now expresses thread intent
+# Simplest coroutine trait for <code>void</code>
 
-<<< ./snippets/desktop-duplication-cpp/src/DuplicationController.cpp#run-capture-acquire-render cpp {1-3|4-10|11-17|all}{lines:true}
+<div style="--prism-font-size:1.5rem">
 
-<div class="mt-[0.55rem] text-[0.78rem] text-muted">Imported directly from <code>DuplicationController.cpp::runCapture</code> in the Windows project.</div>
+<<< ./snippets/slide-projects/desktop-duplication-cpp/src/meta/void_coroutine.h cpp {0|4-5|6|7|8-9|10}{lines:true}
 
-<!--
-[click] Start on capture.
-[click] Acquire there.
-[click] Resume and render there.
-[click] Detour to main only when status needs it.
-[click] Return to capture before releasing the frame. The active thread is visible at each await.
--->
-
----
-
-# Return before releasing the captured frame
-
-<<< ./snippets/desktop-duplication-cpp/src/DuplicationController.cpp#run-capture-status-release cpp {1-7|8-14|15-17|all}{lines:true}
-
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800"><code>releaseFrame()</code> visibly happens on the capture thread—even after the optional main-thread detour.</div>
-
-<!--
-[click] Inspect status on the render thread.
-[click] Detour to main only for the UI update.
-[click] Resume capture before releasing its frame. This is the ownership rule expressed as control flow.
--->
-
----
-
-# Read `co_await` as a lane change
-
-<div class="mt-[1.4rem] flex items-stretch gap-[0.7rem]">
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600 p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>CAPTURE</strong><small>initialize + acquire</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-orange p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>RENDER</strong><small>update + draw</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-green p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>MAIN?</strong><small>status detour</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600 p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>CAPTURE</strong><small>release + repeat</small></div>
 </div>
 
-<div class="mt-12 border-l-[7px] border-brand-orange pl-[1.2rem] text-[1.7rem] font-[650] leading-[1.25]" v-click>Ownership follows the frame. Execution follows the await.</div>
-
 <!--
-This is the architectural payoff. We no longer need the reader to reconstruct a graph of callbacks. The coroutine is the graph, flattened into a sequence.
+Returning void still needs a promise type, supplied here through coroutine_traits.
+[click] promise_type defines the compiler-facing protocol and produces no wrapper object.
+[click] suspend_never starts immediately and destroys the frame automatically at completion.
+[click] Normal completion returns no value; this minimal example also consumes unhandled exceptions.
 -->
 
 ---
 
-# Example 02: the migration ladder
+# Usage
 
-<div class="mt-[1.4rem] flex items-stretch gap-[0.7rem]">
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>raw APC payload</strong><small>manual allocation</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>unique_ptr transfer</strong><small>safe ownership</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>lambda adapter</strong><small>typed packaging</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>coroutine handle</strong><small>continuous intent</small></div>
-</div>
-
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800" v-click>Each rung was useful. Coroutines became compelling only after the ownership boundary was understood.</div>
+<RunCaptureCode />
 
 <!--
-This is a migration story, not a rewrite story. Keep improvements incremental and observable. Coroutines did two jobs: first simplify memory ownership, then reveal architecture.
+Enter the coroutine on the capture thread and keep the outer loop visible as the fixed structure.
+[click] Initialize capture before entering the loop.
+[click] Unfold frame acquisition on the capture thread.
+[click] Fold acquisition and follow the frame onto the render thread.
+[click] Scroll into the optional main-thread status detour.
+[click] Resume the capture thread before releasing its frame.
+[click] Zoom out and reveal the complete coroutine without folding or scrolling.
 -->
+
+---
+
+# Desktop Duplicator: Summary
+
+<ul class="mt-32! grid gap-5 pl-8">
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Use existing Win32 APC APIs</strong></li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Simple coroutine glue code</strong></li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>All coordination in one coroutine</strong></li>
+</ul>
 
 ---
 class: "flex flex-col justify-center bg-[#0b111b] text-white [&_h1]:text-section-title [&_h1]:text-white [&_h1::after]:hidden"
@@ -645,27 +561,19 @@ class: "flex flex-col justify-center bg-[#0b111b] text-white [&_h1]:text-section
 
 <div class="font-mono text-base font-extrabold leading-none tracking-[0.15em] text-cyan-300">LEARNINGS + PITFALLS</div>
 
-# The frame survives.<br />Does your object?
+# Lifetime with Coroutines
 
-<div class="mt-[1.3rem] max-w-[820px] text-[1.45rem] text-slate-300">Coroutine syntax can look safely local while execution actually begins—or resumes—after local owners are gone.</div>
+<div class="mt-[1.3rem] max-w-[820px] text-[1.45rem] text-slate-300">Coroutines may outlive the data!</div>
 
 ---
 
 # The tempting coroutine lambda
 
-<div class="mt-7 grid grid-cols-[1.28fr_0.72fr] items-center gap-[2.1rem]">
-  <div>
+<div style="--prism-font-size:1.5rem">
 
-<<< ./snippets/coroutine-lifetime/main.cpp#lambda-risky cpp {1-2|3-6|7}{lines:true}
+<<< ./snippets/coroutine-lifetime/main.cpp#lambda-risky cpp {2-5|6|3}{lines:true}
 
-  </div>
-  <div>
-    <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>The capture belongs to…</h3><p>the lambda closure object.</p></div>
-    <div class="mt-4 rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_h3]:mt-0 [&_h3]:mb-2 [&_h3]:text-base [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><h3>The coroutine owns…</h3><p>a frame that may outlive that closure.</p></div>
-  </div>
 </div>
-
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-rose-700">A coroutine member body can start after the closure object has already been destroyed.</div>
 
 <!--
 This is the key pitfall. Captures are members of the closure object; invoking a coroutine lambda is a coroutine member call. Depending on initial_suspend, the body may not run before the temporary/local closure dies. Even if it starts immediately, a later resume can still outlive referenced objects.
@@ -673,7 +581,7 @@ This is the key pitfall. Captures are members of the closure object; invoking a 
 
 ---
 
-# What happens behind the syntax
+# What happens
 
 <LambdaLifetime />
 
@@ -686,24 +594,13 @@ This is the key pitfall. Captures are members of the closure object; invoking a 
 
 ---
 
-# Prefer a named coroutine with value parameters
+# Prefer global coroutines
 
-<div class="mt-6 grid grid-cols-2 items-center gap-[2.1rem]">
-<div>
-  <div class="mb-[0.45rem] font-mono text-xs font-[650] leading-none text-rose-700">RISKY · closure owns the state</div>
+<div style="--prism-font-size:1.5rem">
 
-<<< ./snippets/coroutine-lifetime/main.cpp#lambda-risky cpp {2-6}{lines:true}
+<<< ./snippets/coroutine-lifetime/main.cpp#named-safe cpp {1-4|6|2}{lines:true}
 
 </div>
-<div>
-  <div class="mb-[0.45rem] font-mono text-xs font-[650] leading-none text-brand-green">CLEARER · frame owns the value</div>
-
-<<< ./snippets/coroutine-lifetime/main.cpp#named-safe cpp {1-4|6}{lines:true}
-
-</div>
-</div>
-
-<div class="mt-[1.4rem] rounded-xl bg-cyan-50 px-[1.1rem] py-[0.9rem] text-base font-bold text-cyan-800">Pass required state by value into a named coroutine. Make external lifetime dependencies explicit and guarded.</div>
 
 <!--
 This is the simplest habit. Value parameters are copied/moved into the frame according to coroutine rules. For objects that cannot be copied, establish explicit shared ownership or cancellation/lifetime protocols. A raw this capture does not establish lifetime.
@@ -711,49 +608,26 @@ This is the simplest habit. Value parameters are copied/moved into the frame acc
 
 ---
 
-# Four checks before shipping
+# Recap
 
-<div class="mt-8 grid grid-cols-2 items-center gap-[2.1rem]">
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><h2>① Suspension</h2><p>Mark every point where other code may run before continuation.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><h2>② Ownership</h2><p>Know which values live in the frame and which are merely referenced.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><h2>③ Cancellation</h2><p>Decide what happens if the owner or operation disappears.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><h2>④ Destruction</h2><p>Know who destroys the frame on success, failure, and abandonment.</p></div>
-</div>
-
-<!--
-Coroutines simplify control flow; they do not repeal lifetime rules. This checklist is a compact design review. If these answers are unclear, hide less machinery until they become clear.
--->
+<ul class="mt-32! grid gap-5 pl-8">
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Hourglass App</strong> - Use Qt Networking & Signals</li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Desktop Duplicator</strong> - Use Win32 UserAPCs</li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Hints</strong> - Be aware of the lifetimes</li>
+</ul>
 
 ---
 
 # Where are your low-hanging coroutines?
 
-<div class="mt-10 grid grid-cols-3 gap-[1.2rem]">
-  <div class="rounded-[14px] border border-line bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><h2>Async boundary</h2><p>Callbacks, signals, futures, completion events.</p></div>
-  <div class="rounded-[14px] border border-line bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><h2>Leaking state machine</h2><p>Enums and branches whose job is “what happens next”.</p></div>
-  <div class="rounded-[14px] border border-line bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted" v-click><h2>Manual hand-off</h2><p>Work objects carried between threads or event loops.</p></div>
-</div>
-
-<div class="mt-12 border-l-[7px] border-brand-orange pl-[1.2rem] text-[1.7rem] font-[650] leading-[1.25]" v-click>Start with one adapter and one painful flow—not a coroutine framework.</div>
+<ul class="mt-32! grid gap-5 pl-8">
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Sagas</strong> over multiple steps</li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>State Machine</strong> managed in one place</li>
+  <li v-click class="text-[2rem]! leading-[1.2]!"><strong>Callback Chains</strong></li>
+</ul>
 
 <!--
 Give the audience a practical action for Monday. Find a single boundary, build or adopt a narrow awaitable, and compare readability plus lifetime behavior. Do not convert synchronous code merely because the syntax is new.
--->
-
----
-
-# The whole talk in three lines
-
-<div class="mt-12 grid grid-cols-3 gap-[1.2rem]">
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><div class="text-[2.7rem] font-extrabold text-brand-blue">1</div><h2>Await the event</h2><p>Keep asynchronous plumbing at the boundary.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-cyan bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><div class="text-[2.7rem] font-extrabold text-brand-blue">2</div><h2>Express the intent</h2><p>Let the use case read in execution order.</p></div>
-  <div class="rounded-[14px] border border-line border-t-[5px] border-t-brand-orange bg-soft px-5 py-[1.1rem] [&_p]:m-0 [&_p]:text-[0.9rem] [&_p]:text-muted"><div class="text-[2.7rem] font-extrabold text-brand-blue">3</div><h2>Audit lifetime</h2><p>The frame survives; references may not.</p></div>
-</div>
-
-<div class="mt-[2.2rem] max-w-[970px] text-[2.25rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic" v-click>Coroutines are most valuable where your code is <em>already pretending to be sequential.</em></div>
-
-<!--
-Recap both examples. Same mechanism, very different APIs. The durable lesson is to make continuations visible while keeping ownership explicit.
 -->
 
 ---

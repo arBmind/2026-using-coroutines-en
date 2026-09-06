@@ -57,7 +57,7 @@ const stages = [
   {
     line: 7,
     title: "Call greeting",
-    explanation: "Nothing is initialized yet.",
+    explanation: "",
     stack: stackFrame("—", ""),
     heap: [] as FrameMember[],
   },
@@ -71,7 +71,7 @@ const stages = [
   {
     line: 2,
     title: "Before co_await",
-    explanation: "Nothing changed.",
+    explanation: "",
     stack: stackFrame("—", "greeting()"),
     heap: coroutineFrame("RUNNING", "—", "—"),
   },
@@ -85,7 +85,7 @@ const stages = [
   {
     line: 8,
     title: "Before Resume",
-    explanation: "Nothing changed.",
+    explanation: "",
     stack: stackFrame("handle"),
     heap: coroutineFrame("SUSPENDED (line 2)", "—", "—"),
   },
@@ -99,7 +99,7 @@ const stages = [
   {
     line: 3,
     title: "Before co_return",
-    explanation: "All coroutine code ran.",
+    explanation: "",
     stack: stackFrame("handle", "greeting()"),
     heap: coroutineFrame("RUNNING", "Meeting C++ 2026", "—"),
   },

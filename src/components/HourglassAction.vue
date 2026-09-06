@@ -61,7 +61,7 @@ const requestLabel = computed(() =>
 </script>
 
 <template>
-  <div class="mt-3 grid grid-cols-[1.05fr_0.9fr_1fr] items-stretch gap-4">
+  <div class="mt-3 grid grid-cols-[1.05fr_0.9fr_0.7fr] items-stretch gap-4">
     <section
       class="app-window overflow-hidden rounded-[18px] border border-slate-300 bg-white shadow-[0_18px_38px_rgb(15_23_42_/_0.14)]"
     >
@@ -128,12 +128,11 @@ const requestLabel = computed(() =>
       class="relative flex flex-col rounded-[18px] border-2 border-brand-cyan bg-cyan-50/70 p-3.5 shadow-[0_12px_28px_rgb(8_145_178_/_0.1)]"
     >
       <div class="mb-3 flex items-center justify-between">
-        <span
-          class="text-[0.62rem] font-extrabold tracking-[0.12em] text-brand-blue"
+        <span class="text-base font-extrabold tracking-[0.1em] text-brand-blue"
           >COROUTINE STEPS</span
         >
         <span
-          class="rounded-full px-2 py-1 font-mono text-[0.58rem] font-extrabold"
+          class="rounded-full px-2 py-1 font-mono text-[0.75em] font-extrabold"
           :class="
             isBusy
               ? 'bg-amber-100 text-amber-800'
@@ -144,7 +143,7 @@ const requestLabel = computed(() =>
       </div>
 
       <div
-        class="grid flex-1 content-center gap-2 font-mono text-[1.1rem] font-semibold text-slate-800"
+        class="grid flex-1 content-center gap-2 font-mono text-[1.2rem] font-semibold text-slate-800"
       >
         <div
           class="code-step"
@@ -190,7 +189,7 @@ const requestLabel = computed(() =>
         class="absolute -right-8 -top-8 size-28 rounded-full border-[18px] border-cyan-300/8"
       />
       <div
-        class="flex items-center justify-between text-[0.62rem] font-extrabold tracking-[0.1em] text-slate-400"
+        class="flex items-center justify-between text-[1em] font-extrabold tracking-[0.1em] text-slate-400"
       >
         <span>REDMINE REST API</span
         ><span class="i-carbon-cloud text-cyan-300" />
@@ -200,7 +199,7 @@ const requestLabel = computed(() =>
           <Transition name="request" mode="out-in">
             <div
               :key="requestLabel"
-              class="rounded-xl border border-cyan-300/25 bg-white/7 px-3 py-3 font-mono text-[0.72rem] font-bold text-cyan-200"
+              class="rounded-xl border border-cyan-300/25 bg-white/7 px-3 py-3 font-mono text-[1em] font-bold text-cyan-200"
             >
               {{ requestLabel }}
             </div>
@@ -216,7 +215,7 @@ const requestLabel = computed(() =>
             <div class="h-px bg-cyan-300/20" />
           </div>
           <div
-            class="rounded-xl border px-3 py-3 font-mono text-[0.72rem] font-bold transition-all duration-300"
+            class="rounded-xl border px-3 py-3 font-mono text-[1em] font-bold transition-all duration-300"
             :class="
               stage === 2 || stage === 4
                 ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-200'
@@ -231,18 +230,18 @@ const requestLabel = computed(() =>
   </div>
 
   <div
-    class="mt-3 grid min-h-[58px] grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-slate-200 bg-white px-4 py-2 shadow-sm"
+    class="mt-8 grid min-h-[58px] grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-slate-200 bg-white px-4 py-2 shadow-sm"
   >
     <div
-      class="grid size-9 place-items-center rounded-full bg-brand-orange font-mono text-sm font-extrabold text-white"
+      class="grid size-9 place-items-center rounded-full bg-brand-orange font-mono text-base font-extrabold text-white"
     >
       {{ stage + 1 }}
     </div>
     <div>
-      <strong class="block text-[0.88rem] text-brand-blue">{{
+      <strong class="block text-[1.5rem] text-brand-blue">{{
         current.title
       }}</strong>
-      <span class="text-[0.72rem] text-muted">{{ current.detail }}</span>
+      <span class="text-[1.4em] text-muted">{{ current.detail }}</span>
     </div>
     <div class="flex gap-1.5" aria-hidden="true">
       <i
