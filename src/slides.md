@@ -49,7 +49,7 @@ layout: cover
 class: cover ps-24!
 ---
 
-# Background
+# Let's Start!
 
 <!--
 Set expectations: practical use, not a language-lawyer tour. We will see the minimum plumbing, because knowing where it lives matters, but it is not the story.
@@ -74,27 +74,30 @@ Without any plumbing
 <CoroutineCodeEvolution />
 
 <!--
-[click] First make vertical room for an asynchronous completion.
-[click] Change the return surface from string to task<string>.
-[click] co_await marks the suspension point.
-[click] co_return stores the result in the task promise.
-[click] resume supplies the event result and continues the frame.
-[click] result reads the value after completion. The hidden support.hpp contains the promise type, handle ownership, and awaitable; the final source is the compiled coroutine.cpp example.
+* This just a normal C++ function that is invoked.
+1. [click] co_await makes it a coroutine.
+1. [click] now co_return is also required.
+1. [click] usually you need a special return type.
+1. [click] someone has to resume it.
+1. [click] the result is wrapped in the task.
 -->
 
 ---
 
-# Step Through Coroutine
+# Step By Step
 
 <CoroutineFrame />
 
 <!--
-[click] caller invokes greeting while only caller exists on the stack.
-[click] entering the coroutine creates a frame and copies id into it.
-[click] co_await suspends: greeting leaves the stack, while the frame retains state and the continuation.
-[click] resume supplies the Profile and activates that continuation.
-[click] co_return stores the formatted value and reaches final suspend.
-[click] caller reads task.result(); frame destruction follows task lifetime. Allocation is visualized on the heap for the common case, though the standard permits allocation elision.
+* Let's debug our function
+1. [click] caller invokes greeting
+1. [click] coroutine creates a frame and copies arguments.
+1. [click] co_await suspends, frame retains state.
+1. [click] resume supplies the Profile.
+1. [click] profile returned by co_await.
+1. [click] co_return stores the result.
+1. [click] caller continues while coroutine is finished.
+1. [click] frame destruction follows task lifetime.
 -->
 
 ---
@@ -135,16 +138,15 @@ Without any plumbing
 </div>
 
 <!--
-Start on the right and read the native stack bottom-up: a caller or scheduler resumed the coroutine; the coroutine reached co_await; and the awaiter is now executing await_suspend.
-[click] Returning noop_coroutine resumes a handle that deliberately does nothing. The native stack unwinds and the last resumer continues. A void-returning await_suspend has the same visible outcome.
-[click] Returning the continuation argument immediately resumes this coroutine, which proceeds through await_resume and continues after co_await.
-[click] Returning another valid suspended handle transfers control to that coroutine. The current coroutine remains suspended.
-The coroutine machinery evaluates resume on the returned handle. Do not return a null handle or one already at final suspend; noop_coroutine is the safe “nobody” value.
+* Awaiter has full control what happens
+1. [click] Returning noop_coroutine resumes a handle that deliberately does nothing.
+1. [click] Returning the continuation argument immediately resumes this coroutine.
+1. [click] Transfers control to that coroutine.
 -->
 
 ---
 
-# Hello, I’m Andreas
+# Andreas Reischuck
 
 <div class="mt-6 grid grid-cols-[0.56fr_1.44fr] items-center gap-[2.4rem]">
   <img class="m-auto max-h-[430px] drop-shadow-[0_12px_18px_rgb(15_23_42_/_0.18)]" :src="'/images/andreas.png'" alt="Andreas Reischuck" />
@@ -152,7 +154,7 @@ The coroutine machinery evaluates resume on the returned handle. Do not return a
     <div class="max-w-[970px] text-[2.55rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic">I like code that says what it is <em>trying to do.</em></div>
     <div class="mt-[1.2rem] grid gap-3 text-[1.4em]">
       <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">⌁</span><span>C++ developer and software architect</span></div>
-      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">◫</span><span>Builder of tools people use every day</span></div>
+      <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">◫</span><span>Building tools people use every day</span></div>
       <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">✦</span><span>Host, trainer, and C++ community enthusiast</span></div>
     </div>
   </div>
@@ -191,28 +193,24 @@ class: "relative overflow-hidden flex flex-col justify-center bg-[#0b111b] text-
 
 <!--
 First use case: the Hourglass desktop and Android app. It is a Qt client for the REST API exposed by our Hourglass plugin for Redmine.
+
+Billing our time is the most transparent evaluation. We use Redmine is to organize the company and projects. We maintain the Hourglass plugin to track what we have done. This app is its desktop and Android companion.
 -->
 
 ---
 transition: slide-left
 ---
 
-<div class="mt-6 grid grid-cols-[1fr_auto_1fr] items-stretch gap-5">
-  <section class="rounded-2xl border border-slate-300 bg-white p-5 shadow-slide-card">
-    <div class="flex h-20 items-center"><img class="max-h-16 max-w-[250px]" :src="'/images/redmine-logo.png'" alt="Redmine" /></div>
-    <h2 class="mt-4! text-[1.35rem]!">Project management</h2>
-  </section>
-  <div class="grid place-items-center text-4xl font-light text-brand-orange">+</div>
-  <section class="rounded-2xl border-2 border-brand-orange bg-orange-50 p-5 shadow-[0_12px_28px_rgb(234_88_12_/_0.1)]">
-    <div class="flex h-20 items-center gap-4"><img class="size-16" src="./assets/hourglass/appicon.ico" alt="Hourglass" /><strong class="text-2xl text-orange-900">Hourglass</strong></div>
-    <h2 class="mt-4! text-[1.35rem]! text-orange-900!">Time tracking plugin</h2>
-  </section>
-</div>
+# The concept
 
-<div class="mt-2 text-left text-[0.48rem] text-slate-400">Redmine logo © Martin Herr, CC BY-SA 2.5.</div>
+<HourglassAction />
 
 <!--
-Like most software companies, HicknHack is time constrained, so we want to understand how long each job takes. Redmine is our ticket system. We maintain the Hourglass plugin, and this app is its desktop and Android companion.
+* User clicks start, Gui is waiting
+1. [click] post to Redmine Hourglass
+1. [click] apply results
+1. [click] fetch issue details from Redmine
+1. [click] unlock the GUI and replace Start with the active tracker’s Stop button
 -->
 
 ---
@@ -222,8 +220,8 @@ transition: slide-left
 <div class="mt-7 grid grid-cols-[0.48fr_1.52fr] items-center gap-8">
   <div class="grid place-items-center rounded-3xl bg-[#0b111b] p-8 shadow-[0_18px_38px_rgb(15_23_42_/_0.16)]"><img class="w-[210px]" :src="'/images/qt-logo.png'" alt="Qt" /></div>
   <div>
-    <div class="mb-5 text-[1.55rem] font-[760] tracking-[-0.035em] text-brand-blue">A cross-platform C++ application framework</div>
-    <div class="grid grid-cols-3 gap-3 text-center text-[0.78rem] font-bold">
+    <div class="mb-5 text-[2rem] font-[760] tracking-[-0.035em] text-brand-blue">A cross-platform C++ application framework</div>
+    <div class="grid grid-cols-3 gap-3 text-center text-[1.8rem] font-bold">
       <div class="rounded-xl border border-line bg-soft p-4">GUI + QML</div>
       <div class="rounded-xl border border-line bg-soft p-4">Files + settings</div>
       <div class="rounded-xl border border-line bg-soft p-4">Threads + timers</div>
@@ -235,7 +233,7 @@ transition: slide-left
 </div>
 
 <div class="mt-7 grid grid-cols-[auto_1fr] items-center gap-4 rounded-2xl border-l-[7px] border-brand-orange bg-orange-50 px-5 py-4">
-  <div><code class="text-[1.2rem] font-bold text-brand-blue">QNetworkAccessManager</code><span class="ml-3 text-[0.9rem] text-muted">is Qt’s asynchronous HTTP client abstraction.</span></div>
+  <div><code class="text-[1.5rem]! font-900! text-brand-blue">QNetworkAccessManager</code><span class="ml-3 text-[1.5rem] text-muted">is Qt’s asynchronous HTTP client abstraction.</span></div>
 </div>
 
 <div class="mt-2 text-right text-[0.48rem] text-slate-400">Qt is a registered trademark of The Qt Company Ltd. and its subsidiaries.</div>
@@ -248,40 +246,34 @@ Qt is the GUI framework, but it also abstracts a large part of the operating sys
 transition: slide-left
 ---
 
-# The concept
+<div class="mt-7 grid grid-cols-[1fr_auto] items-center gap-7">
+  <div class="flex flex-col gap-5" style="--prism-font-size:1.3em">
 
-<HourglassAction />
+<div class="mb-[-0.75rem] font-mono text-[1rem] font-extrabold tracking-[0.14em] text-brand-blue uppercase">Qt header</div>
 
-<!--
-[click] Start the tracker: the UI remains alive while the coroutine waits for POST.
-[click] finished() resumes the frame and applies the tracker response.
-[click] The optional issue lookup becomes a second local suspension point.
-[click] The same function returns the model to Idle. Point out that no native thread was occupied while the frame was suspended.
--->
+<<< ./snippets/qnetwork-access-manager.cpp#qnam-api cpp {}{lines:true}
 
----
-transition: slide-left
----
+<div v-click="1" class="transition-opacity duration-500">
 
-<div class="mt-7 grid grid-cols-[0.82fr_0.48fr] items-center gap-7">
-  <div class="flex flex-col gap-5">
+<div class="mb-[0.75rem] font-mono text-[1rem] font-extrabold tracking-[0.14em] text-brand-blue uppercase">Usage</div>
 
-<<< ./snippets/qnetwork-access-manager.cpp#qnam-api cpp {3}{lines:true}
+<<< ./snippets/qnetwork-access-manager.cpp#qnam-start cpp {0|1|2|3-5}{lines:true}
 
-<<< ./snippets/qnetwork-access-manager.cpp#qnam-start cpp {0|2|3-5}{lines:true}
+</div>
 
   </div>
   <div class="grid gap-5">
-    <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border border-line bg-soft p-3" v-click="1"><span class="grid size-11 place-items-center rounded-full bg-brand-blue font-mono font-black text-white">1</span><div><strong class="text-lg text-brand-blue">Call <code>get(request)</code></strong><span class="mt-1 block text-muted">Queue work</span></div></div>
-    <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border border-line bg-soft p-3" v-click="1"><span class="grid size-11 place-items-center rounded-full bg-brand-orange font-mono font-black text-white">2</span><div><strong class="text-lg text-brand-blue">Receive <code>QNetworkReply</code></strong><span class="mt-1 block text-muted">Future for the work.</span></div></div>
+    <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border border-line bg-soft p-3" v-click="2"><span class="grid size-11 place-items-center rounded-full bg-brand-blue font-mono font-black text-white">1</span><div><strong class="text-lg text-brand-blue">Call <code>get(request)</code></strong><span class="mt-1 block text-muted">Queue work</span></div></div>
+    <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border border-line bg-soft p-3" v-click="2"><span class="grid size-11 place-items-center rounded-full bg-brand-orange font-mono font-black text-white">2</span><div><strong class="text-lg text-brand-blue">Receive <code>QNetworkReply</code></strong><span class="mt-1 block text-muted">Future for the work.</span></div></div>
     <div class="grid grid-cols-[52px_1fr] items-center gap-3 rounded-xl border-2 border-brand-cyan bg-cyan-50 p-3" v-click="3"><span class="grid size-11 place-items-center rounded-full bg-brand-cyan font-mono font-black text-white">3</span><div><strong class="text-lg text-cyan-900">Signal <code>finished()</code></strong><span class="mt-1 block text-cyan-900/65">Called when done.</span></div></div>
   </div>
 </div>
 
 <!--
-[click] Call get with a request.
-[click] The return value is a QNetworkReply pointer, but the response is not ready yet.
-[click] Completion arrives later as a Qt signal. The UI thread remains available to process input and paint.
+The QNetworkAccessManager has asynchronous get operation.
+1. [click] Build the request.
+1. [click] Call get and receive a QNetworkReply pointer, although the response is not ready yet.
+1. [click] Connect the finished signal. Completion arrives later.
 -->
 
 ---
@@ -306,10 +298,11 @@ transition: slide-left
 </div>
 
 <!--
-[click] Transport errors belong to the reply.
-[click] HTTP failure is a separate protocol layer.
-[click] A successful HTTP body can still fail JSON parsing.
-[click] Only then process the value and decide what runs next—while also managing reply lifetime. One request has accumulated five reader concerns.
+1. [click] Handle all network errors and abort.
+1. [click] Evaluate HTTP response code.
+1. [click] Parse response as JSON.
+1. [click] Process the result.
+1. [click] Continue with next request.
 -->
 
 ---
@@ -317,18 +310,18 @@ transition: slide-left
 class: code-slide
 ---
 
-# CoRoutine Machinery
+# NetworkTask for CoRoutine
 
 <AwaiterMachinery />
 
 <!--
-The NetworkTask stores the coroutine handle that can continue it.
-[click] The promise intercepts QNetworkReply and turns it into something co_await can use.
-[click] One narrow Awaiter owns the reply boundary. The callback does not disappear—it stops shaping every caller.
-[click] await_ready preserves the fast path when the reply has already completed.
-[click] await_suspend is the entire signal-to-resume bridge: finished() invokes the saved handle.
-[click] await_resume runs after continuation and converts network, HTTP, and JSON outcomes into the domain response. This excerpt reformats the real NetworkTask.h to fit the projector.
-[click] Finish with the whole adapter in view: the task hook, the three Awaiter methods, and the returned Awaiter all fit together.
+The NetworkTask is the main.
+1. [click] The promise type is required from the book. await_transform is the magic.
+1. [click] Return the Awaiter implementation storing the given QNetworkReply.
+1. [click] await_ready matches isFinished().
+1. [click] await_suspend connects to finished signal and resumes coroutine.
+1. [click] await_resume handles all default handling of the reply.
+1. [click] Finish with the whole adapter in view: the task hook, the three Awaiter methods, and the returned Awaiter all fit together.
 -->
 
 ---
@@ -337,18 +330,18 @@ transition: slide-left
 
 # Usage
 
-<div style="--prism-font-size:1.2em">
+<div style="--prism-font-size:1.4em">
 
 <<< ./snippets/qnetwork-access-manager.cpp#refresh-coroutine cpp {0|1-2|4-6|8-10|12-14|16}{lines:true}
 
 </div>
 
 <!--
-[click] Establish the updating state.
-[click] Await and apply the current user; its failure path stays beside it.
-[click] Do the same for activities.
-[click] Do the same for the active tracker, including the expected not-found case.
-[click] Mark the account live. Three network waits now read as one refresh policy.
+1. [click] Establish the updating state.
+1. [click] Await and apply the current user; its failure path stays beside it.
+1. [click] Do the same for activities.
+1. [click] Do the same for the active tracker, including the expected not-found case.
+1. [click] Mark the account live. Three network waits now read as one refresh policy.
 -->
 
 ---
@@ -365,10 +358,10 @@ transition: fade-out
 </ul>
 
 <!--
-[click] Keep the proven Qt networking layer.
-[click] Signals and slots provide the callback that resumes the coroutine.
-[click] The adapter stays deliberately small.
-[click] The result is network orchestration that reads from top to bottom.
+1. [click] Keep the proven Qt networking layer.
+1. [click] Signals and slots provide the callback that resumes the coroutine.
+1. [click] The adapter stays deliberately small.
+1. [click] The result is network orchestration that reads from top to bottom.
 -->
 
 ---
@@ -389,19 +382,19 @@ class: "flex flex-col justify-center bg-[#0b111b] text-white [&_h1]:text-section
 
 <!--
 Start with a clean desktop and an idle projector. The duplicator begins with no application or region selected.
-[click] Open Qt Creator. The IDE includes the project tree, real-looking coroutine capture code, and its application output.
-[click] Make the IDE smaller and open presenter notes beside it. The notes remain useful locally but must stay private.
-[click] Show the transparent capture rectangle. It moves directly into place over the complete editor tab, and the beamer follows while notes and console stay private.
-[click] Move to the remote-work variant: one ultrawide monitor holds two source files side by side and a Teams call on the right.
-[click] Select the CaptureThread source pane with the same transparent rectangle. Teams shows the live region immediately.
-[click] Move and expand the rectangle over the complete pane. The Teams share follows it while the second source file, console, and rest of the desktop stay local.
+1. [click] Open Qt Creator. The IDE includes the project tree, real-looking coroutine capture code, and its application output.
+1. [click] Make the IDE smaller and open presenter notes beside it. The notes remain useful locally but must stay private.
+1. [click] Show the transparent capture rectangle. It moves directly into place over the complete editor tab, and the beamer follows while notes and console stay private.
+1. [click] Move to the remote-work variant: one ultrawide monitor holds two source files side by side and a Teams call on the right.
+1. [click] Select the CaptureThread source pane with the same transparent rectangle. Teams shows the live region immediately.
+1. [click] Move and expand the rectangle over the complete pane. The Teams share follows it while the second source file, console, and rest of the desktop stay local.
 -->
 
 ---
 
 # The Core Loop
 
-<div class="mt-[1.4rem] flex items-stretch gap-[0.7rem]">
+<div class="mt-[1.4rem] flex items-stretch gap-[0.7rem] text-[1.8rem]">
   <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600 p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>CAPTURE</strong><small>acquire changes</small></div>
   <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
   <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-orange p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>RENDER</strong><small>update texture + draw</small></div>
@@ -438,8 +431,8 @@ DWORD QueueUserAPC(
 
 <!--
 Start with the Win32 declaration: a callback, a target thread, and one pointer-sized value.
-[click] Use Microsoft’s definition verbatim. Queueing is a request; it does not interrupt arbitrary user-mode code.
-[click] The target thread invokes the callback when it enters an alertable wait.
+1. [click] Use Microsoft’s definition verbatim. Queueing is a request; it does not interrupt arbitrary user-mode code.
+1. [click] The target thread invokes the callback when it enters an alertable wait.
 -->
 
 ---
@@ -454,11 +447,11 @@ Start with the Win32 declaration: a callback, a target thread, and one pointer-s
 
 <!--
 WinMain creates the worker thread.
-[click] The worker loops in an alertable wait, which gives Windows a place to dispatch its APC queue.
-[click] WinMain queues the APC with 42 as its pointer-sized value.
-[click] Windows invokes the APC callback on the worker thread.
-[click] The callback prints the observed value and flushes stdout so redirected output is visible.
-[click] WinMain deliberately never exits; the example test kills it after observing the output.
+1. [click] The worker loops in an alertable wait, which gives Windows a place to dispatch its APC queue.
+1. [click] WinMain queues the APC with 42 as its pointer-sized value.
+1. [click] Windows invokes the APC callback on the worker thread.
+1. [click] The callback prints the observed value and flushes stdout so redirected output is visible.
+1. [click] WinMain deliberately never exits; the example test kills it after observing the output.
 -->
 
 ---
@@ -473,10 +466,10 @@ class: code-slide
 
 <!--
 The adapter heap-owns every callback, keeping the ownership handoff explicit.
-[click] The PAPCFUNC-compatible thunk reconstructs the unique_ptr, invokes the functor, and destroys it on return.
-[click] The constructor creates the unique_ptr, so a failed or skipped queue operation cleans up normally.
-[click] c_parameter exposes the pointer as ULONG_PTR, and release transfers ownership away from the temporary adapter.
-[click] queueUserApc releases only after QueueUserAPC succeeds; otherwise the adapter destructor still owns and deletes the functor.
+1. [click] The PAPCFUNC-compatible thunk reconstructs the unique_ptr, invokes the functor, and destroys it on return.
+1. [click] The constructor creates the unique_ptr, so a failed or skipped queue operation cleans up normally.
+1. [click] c_parameter exposes the pointer as ULONG_PTR, and release transfers ownership away from the temporary adapter.
+1. [click] queueUserApc releases only after QueueUserAPC succeeds; otherwise the adapter destructor still owns and deletes the functor.
 -->
 
 ---
@@ -491,9 +484,9 @@ The adapter heap-owns every callback, keeping the ownership handoff explicit.
 
 <!--
 Git history gives us a clean before-and-after: this is the parent of commit d07fe0a, which replaced the thread dance with one C++20 coroutine.
-[click] DuplicationController owned explicit main, render, and capture thread abstractions. One comment collapses the unrelated machinery.
-[click] A captured frame became a lambda queued to the render thread through the APC wrapper.
-[click] Rendering either kicked capture directly or queued another lambda to the main thread, which updated status and kicked capture from there.
+1. [click] DuplicationController owned explicit main, render, and capture thread abstractions. One comment collapses the unrelated machinery.
+1. [click] A captured frame became a lambda queued to the render thread through the APC wrapper.
+1. [click] Rendering either kicked capture directly or queued another lambda to the main thread, which updated status and kicked capture from there.
 -->
 
 ---
@@ -508,8 +501,8 @@ Git history gives us a clean before-and-after: this is the parent of commit d07f
 
 <!--
 The APC callback reconstructs the coroutine handle and resumes it on the target thread.
-[click] await_suspend queues that callback with the handle address as its payload.
-[click] If QueueUserAPC fails, nobody can resume the suspended coroutine, so destroy its frame.
+1. [click] await_suspend queues that callback with the handle address as its payload.
+1. [click] If QueueUserAPC fails, nobody can resume the suspended coroutine, so destroy its frame.
 -->
 
 ---
@@ -524,9 +517,9 @@ The APC callback reconstructs the coroutine handle and resumes it on the target 
 
 <!--
 Returning void still needs a promise type, supplied here through coroutine_traits.
-[click] promise_type defines the compiler-facing protocol and produces no wrapper object.
-[click] suspend_never starts immediately and destroys the frame automatically at completion.
-[click] Normal completion returns no value; this minimal example also consumes unhandled exceptions.
+1. [click] promise_type defines the compiler-facing protocol and produces no wrapper object.
+1. [click] suspend_never starts immediately and destroys the frame automatically at completion.
+1. [click] Normal completion returns no value; this minimal example also consumes unhandled exceptions.
 -->
 
 ---
@@ -537,12 +530,12 @@ Returning void still needs a promise type, supplied here through coroutine_trait
 
 <!--
 Enter the coroutine on the capture thread and keep the outer loop visible as the fixed structure.
-[click] Initialize capture before entering the loop.
-[click] Unfold frame acquisition on the capture thread.
-[click] Fold acquisition and follow the frame onto the render thread.
-[click] Scroll into the optional main-thread status detour.
-[click] Resume the capture thread before releasing its frame.
-[click] Zoom out and reveal the complete coroutine without folding or scrolling.
+1. [click] Initialize capture before entering the loop.
+1. [click] Unfold frame acquisition on the capture thread.
+1. [click] Fold acquisition and follow the frame onto the render thread.
+1. [click] Scroll into the optional main-thread status detour.
+1. [click] Resume the capture thread before releasing its frame.
+1. [click] Zoom out and reveal the complete coroutine without folding or scrolling.
 -->
 
 ---
@@ -586,10 +579,10 @@ This is the key pitfall. Captures are members of the closure object; invoking a 
 <LambdaLifetime />
 
 <!--
-[click] We create a closure containing state.
-[click] Calling its coroutine operator creates/returns a coroutine; the closure is effectively its this object.
-[click] launch returns and destroys the local closure.
-[click] The coroutine body begins or resumes and reaches through a dangling this to state. The frame survived, but the capture did not move into it just because the body looks local.
+1. [click] We create a closure containing state.
+1. [click] Calling its coroutine operator creates/returns a coroutine; the closure is effectively its this object.
+1. [click] launch returns and destroys the local closure.
+1. [click] The coroutine body begins or resumes and reaches through a dangling this to state. The frame survived, but the capture did not move into it just because the body looks local.
 -->
 
 ---
@@ -674,13 +667,13 @@ Invite people to the local/user group and to submit even a short talk. The usefu
 class: "flex flex-col items-center justify-center bg-[#07111d] text-center text-white [&_h1]:text-hero [&_h1]:text-white [&_h1::after]:hidden [&_p]:text-xl [&_p]:text-slate-300"
 ---
 
-<div class="text-[0.78rem] font-extrabold tracking-[0.14em] text-brand-orange uppercase">THANK YOU · QUESTIONS?</div>
+<div class="text-[2rem] mb-10 font-extrabold tracking-[0.14em] text-brand-orange uppercase">THANK YOU · QUESTIONS?</div>
 
 # <span class="text-cyan-300">play more</span><br />with coroutines
 
-<p>Start small. Read the flow. Respect the lifetime.</p>
+<p class="text-[1.5rem]! mt-10!">Start small. Read the flow. Respect the lifetime.</p>
 
-<div class="mt-10 flex items-center gap-8">
+<div class="mt-15 flex items-center gap-8 text-[1.2rem]">
   <span>Andreas Reischuck</span>
   <span class="text-cyan-300">HicknHack Software GmbH</span>
 </div>

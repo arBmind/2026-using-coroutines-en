@@ -7,32 +7,33 @@ import commentIcon from "../assets/hourglass/images/comment.png";
 import issueIcon from "../assets/hourglass/images/issue.png";
 import projectIcon from "../assets/hourglass/images/project.png";
 import startIcon from "../assets/hourglass/images/start_tracker.png";
+import stopIcon from "../assets/hourglass/images/stop_tracker.png";
 
 const stages = [
   {
     label: "READY",
     title: "The user presses Start",
-    detail: "One intent enters the Qt event loop.",
+    detail: "Transition to network activity.",
   },
   {
     label: "POST",
     title: "Create the tracker",
-    detail: "The request leaves; the UI thread does not wait.",
+    detail: "Wait for result.",
   },
   {
     label: "RESUME",
     title: "Apply the reply",
-    detail: "finished() resumes exactly where the function paused.",
+    detail: "Tracker is created.",
   },
   {
     label: "GET",
     title: "Resolve the issue, if needed",
-    detail: "A second suspension keeps the optional branch local.",
+    detail: "Wait for result again.",
   },
   {
-    label: "IDLE",
-    title: "The action is complete",
-    detail: "The same function finishes the state transition.",
+    label: "TRACKING",
+    title: "The time tracker is running",
+    detail: "The enabled Stop control replaces Start.",
   },
 ];
 
@@ -55,6 +56,7 @@ onUnmounted(() => clicks.unregister(clickId));
 
 const current = computed(() => stages[stage.value]);
 const isBusy = computed(() => stage.value > 0 && stage.value < 4);
+const isTracking = computed(() => stage.value === 4);
 const requestLabel = computed(() =>
   stage.value >= 3 ? "GET /issues/4711" : "POST /time_trackers/start",
 );
@@ -107,19 +109,42 @@ const requestLabel = computed(() =>
               class="font-mono text-[1.55rem] font-extrabold leading-none text-slate-800"
             >
               00:00:<span :class="isBusy ? 'ui-tick' : ''">{{
-                isBusy ? "01" : "00"
+                stage > 0 ? "01" : "00"
               }}</span>
             </div>
           </div>
-          <button
-            class="grid size-16 place-items-center rounded-2xl border-0 bg-[#00a99d] shadow-[0_8px_18px_rgb(13_148_136_/_0.25)]"
-            :class="{ 'start-pressed': stage > 0 }"
-          >
-            <img
-              :src="startIcon"
-              class="size-10 object-contain brightness-0 invert"
-            />
-          </button>
+          <Transition name="tracker-control" mode="out-in">
+            <button
+              v-if="isTracking"
+              key="stop"
+              aria-label="Stop time tracker"
+              class="tracker-button bg-[#e53935] shadow-[0_8px_18px_rgb(229_57_53_/_0.28)]"
+            >
+              <img
+                :src="stopIcon"
+                class="size-10 object-contain brightness-0 invert"
+              />
+            </button>
+            <button
+              v-else
+              key="start"
+              aria-label="Start time tracker"
+              class="tracker-button relative bg-[#00a99d] shadow-[0_8px_18px_rgb(13_148_136_/_0.25)]"
+              :class="{ 'start-pressed': stage > 0, 'tracker-busy': isBusy }"
+              :disabled="isBusy"
+            >
+              <img
+                :src="startIcon"
+                class="size-10 object-contain brightness-0 invert transition-opacity duration-200"
+                :class="isBusy ? 'opacity-0' : 'opacity-100'"
+              />
+              <span
+                v-if="isBusy"
+                class="waiting-spinner"
+                aria-hidden="true"
+              />
+            </button>
+          </Transition>
         </div>
       </div>
     </section>
@@ -129,7 +154,7 @@ const requestLabel = computed(() =>
     >
       <div class="mb-3 flex items-center justify-between">
         <span class="text-base font-extrabold tracking-[0.1em] text-brand-blue"
-          >COROUTINE STEPS</span
+          >STEPS</span
         >
         <span
           class="rounded-full px-2 py-1 font-mono text-[0.75em] font-extrabold"
@@ -298,8 +323,41 @@ const requestLabel = computed(() =>
 .ui-tick {
   animation: ui-tick 900ms steps(1) infinite;
 }
+.tracker-button {
+  @apply grid size-16 place-items-center rounded-2xl border-0 transition-all duration-300;
+}
+.tracker-busy {
+  cursor: wait;
+  filter: saturate(0.28);
+  opacity: 0.58;
+  box-shadow: none;
+}
+.waiting-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 2.15rem;
+  height: 2.15rem;
+  border: 4px solid rgb(255 255 255 / 0.34);
+  border-top-color: white;
+  border-radius: 9999px;
+  animation: waiting-spin 850ms linear infinite;
+}
 .start-pressed {
   animation: press 420ms ease-out;
+}
+.tracker-control-enter-active,
+.tracker-control-leave-active {
+  transition: all 240ms ease;
+}
+.tracker-control-enter-from {
+  transform: scale(0.72) rotate(-12deg);
+  opacity: 0;
+}
+.tracker-control-leave-to {
+  transform: scale(0.72) rotate(12deg);
+  opacity: 0;
 }
 .server-pulse {
   animation: server-pulse 1.2s ease-in-out infinite;
@@ -324,6 +382,14 @@ const requestLabel = computed(() =>
 @keyframes press {
   45% {
     transform: scale(0.88);
+  }
+}
+@keyframes waiting-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 @keyframes server-pulse {

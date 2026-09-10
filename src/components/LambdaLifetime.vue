@@ -2,18 +2,18 @@
   <div class="relative mt-[0.8rem] h-[390px] pt-5">
     <div class="relative ml-[130px] h-[145px] border-t-2 border-slate-400">
       <div
-        class="absolute top-[-13px] left-[-130px] w-[110px] text-right text-xs font-bold text-muted"
+        class="absolute top-[-13px] left-[-130px] w-[110px] text-right text-[1.2rem] font-bold text-muted"
       >
         owner / scope
       </div>
       <div
-        class="absolute top-[18px] left-[4%] w-[190px] rounded-[10px] bg-brand-blue p-[0.7rem] text-center text-xs font-bold text-white"
+        class="absolute top-[18px] left-[4%] w-[190px] rounded-[10px] bg-brand-blue p-[0.7rem] text-center text-[1.2rem] font-bold text-white"
         v-click="1"
       >
         ① lambda object created
       </div>
       <div
-        class="absolute top-[18px] left-[43%] w-[190px] rounded-[10px] bg-rose-700 p-[0.7rem] text-center text-xs font-bold text-white"
+        class="absolute top-[18px] left-[43%] w-[190px] rounded-[10px] bg-rose-700 p-[0.7rem] text-center text-[1.2rem] font-bold text-white"
         v-click="3"
       >
         ③ lambda object destroyed
@@ -22,18 +22,18 @@
 
     <div class="relative ml-[130px] h-[145px] border-t-2 border-slate-400">
       <div
-        class="absolute top-[-13px] left-[-130px] w-[110px] text-right text-xs font-bold text-muted"
+        class="absolute top-[-13px] left-[-130px] w-[110px] text-right text-[1.2rem] font-bold text-muted"
       >
         coroutine
       </div>
       <div
-        class="absolute top-[18px] left-[23%] w-[190px] rounded-[10px] bg-brand-cyan p-[0.7rem] text-center text-xs font-bold text-white"
+        class="absolute top-[18px] left-[23%] w-[190px] rounded-[10px] bg-brand-cyan p-[0.7rem] text-center text-[1.2rem] font-bold text-white"
         v-click="2"
       >
         ② call returns a coroutine
       </div>
       <div
-        class="absolute top-[18px] left-[69%] w-[190px] rounded-[10px] bg-brand-green p-[0.7rem] text-center text-xs font-bold text-white"
+        class="absolute top-[18px] left-[69%] w-[190px] rounded-[10px] bg-brand-green p-[0.7rem] text-center text-[1.2rem] font-bold text-white"
         v-click="4"
       >
         ④ body starts later
@@ -41,10 +41,10 @@
     </div>
 
     <div
-      class="absolute top-[92px] left-[37%] h-28 border-l-3 border-dashed border-brand-orange pl-2 text-xs text-brand-orange"
+      class="absolute top-[72px] left-[37%] h-28 border-l-3 border-dashed border-brand-orange pl-2 text-[1.2rem] text-brand-orange"
       v-click="2"
     >
-      closure is <strong>this</strong>
+      closure<br />captures<br /><strong>this</strong>
     </div>
     <div
       class="absolute right-[2%] bottom-[18px] rounded-xl border-3 border-rose-700 bg-rose-50 px-4 py-3 text-base font-[850] text-rose-800"

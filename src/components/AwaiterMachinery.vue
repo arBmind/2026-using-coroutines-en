@@ -23,20 +23,20 @@ const stages = [
   {
     title: "store the coroutine",
     explanation: "The task owns the handle that can continue it.",
-    added: [1, 2, 24],
+    added: [1, 2, 25],
     focus: [2],
   },
   {
     title: "intercept the reply",
     explanation: "The promise turns QNetworkReply into an awaitable.",
-    added: [3, 4, 5, 22, 23],
-    focus: [3, 4, 5, 22, 23],
+    added: [3, 4, 5, 23, 24],
+    focus: [3, 4, 5, 23, 24],
   },
   {
     title: "build one Awaiter",
     explanation: "It keeps the reply and returns it to the coroutine.",
-    added: [6, 7, 20, 21],
-    focus: [6, 7, 20, 21],
+    added: [6, 7, 21, 22],
+    focus: [6, 7, 21, 22],
   },
   {
     title: "skip needless suspension",
@@ -47,14 +47,14 @@ const stages = [
   {
     title: "resume on finished()",
     explanation: "The Qt callback continues the saved coroutine.",
-    added: [11, 12, 13, 14],
-    focus: [11, 12, 13, 14],
+    added: [11, 12, 13, 14, 15],
+    focus: [11, 12, 13, 14, 15],
   },
   {
     title: "return the result",
     explanation: "Resumption converts the reply into the domain value.",
-    added: [15, 16, 17, 18, 19],
-    focus: [15, 16, 17, 18, 19],
+    added: [16, 17, 18, 19, 20],
+    focus: [16, 17, 18, 19, 20],
   },
   {
     title: "complete Awaiter",
@@ -82,7 +82,7 @@ const current = computed(() => stages[stage.value]);
 const focusLines = computed(() => new Set(current.value.focus));
 const completeView = computed(() => stage.value === stages.length - 1);
 const activeGapAfter = computed(
-  () => [2, 5, 7, 10, 14, undefined, undefined][stage.value],
+  () => [2, 5, 7, 10, 16, undefined, undefined][stage.value],
 );
 
 type DisplayRow =
@@ -94,7 +94,7 @@ type DisplayRow =
       afterLine: number;
     };
 
-const gapAfterLines = new Set([2, 5, 7, 10, 14]);
+const gapAfterLines = new Set([2, 5, 7, 10, 16]);
 const displayRows: DisplayRow[] = sourceLines.flatMap((line, index) => {
   const lineNumber = index + 1;
   const rows: DisplayRow[] = [];
@@ -326,37 +326,38 @@ onUnmounted(() => {
     box-shadow 260ms ease;
 }
 
-.code-line.is-visible {
-  height: 1.7rem;
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+.code-line {
+  &.is-visible {
+    height: 1.7rem;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  & > span,
+  code {
+    transition:
+      font-size 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      line-height 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  & > span {
+    line-height: 1;
+  }
+
+  code {
+    border-radius: 0;
+    background: transparent;
+    /* Slidev treats any code element outside a pre as inline code (0.9em). */
+    font-size: 1.3rem !important;
+    line-height: 1.7rem;
+    padding: 0;
+  }
 }
 
 .code-gap.is-visible {
   height: 0.8rem;
   opacity: 1;
   transform: translateY(0);
-}
-
-.code-line > span,
-.code-line code {
-  transition:
-    font-size 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    line-height 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.code-line > span {
-  line-height: 1;
-}
-
-.code-line code {
-  border-radius: 0;
-  background: transparent;
-  /* Slidev treats any code element outside a pre as inline code (0.9em). */
-  font-size: 1.2rem !important;
-  line-height: 1.7rem;
-  padding: 0;
 }
 
 .code-lines > .code-line,

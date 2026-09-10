@@ -9,8 +9,9 @@ struct NetworkTask {
           return reply->isFinished();
         }
         void await_suspend(std::coroutine_handle<> handle) {
-          QObject::connect(reply, &QNetworkReply::finished, 
-            [handle]() { handle.resume(); });
+          QObject::connect(reply, &QNetworkReply::finished, [handle]() {
+            handle.resume();
+          });
         }
         auto await_resume() const noexcept -> ResponseVariant {
           // ...error handling...
