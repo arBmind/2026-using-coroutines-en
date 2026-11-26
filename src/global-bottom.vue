@@ -1,6 +1,6 @@
 <template>
   <footer
-    v-if="![1, 8, 36].includes($slidev.nav.currentPage)"
+    v-if="![1, 8, 37].includes($slidev.nav.currentPage)"
     class="absolute inset-x-0 bottom-0 z-100 grid h-footer grid-cols-[1fr_auto_1fr] items-center bg-[#07090d] px-[1.45rem] text-[0.73rem] tracking-[0.025em] text-slate-50"
   >
     <span>Andreas Reischuck</span>

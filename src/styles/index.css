@@ -125,6 +125,26 @@ html body .slidev-presenter {
 .slidev-layout .apc-minimal pre {
   font-size: 1.08rem !important;
   line-height: 1.42 !important;
+
+  .line > span {
+    opacity: var(--line-opacity, 1);
+    transition: opacity 250ms ease;
+  }
+  .line:is(:nth-child(5), :nth-child(7), :nth-child(14)) {
+    --line-opacity: var(--thread-skeleton-opacity);
+  }
+  .line:nth-child(6) {
+    --line-opacity: var(--thread-body-opacity);
+  }
+  .line:is(:nth-child(9), :nth-child(11), :nth-child(15)) {
+    --line-opacity: var(--apc-skeleton-opacity);
+  }
+  .line:nth-child(10) {
+    --line-opacity: var(--apc-body-opacity);
+  }
+  .line:nth-child(16) {
+    --line-opacity: var(--main-loop-opacity);
+  }
 }
 
 .slidev-layout .apc-owned pre {

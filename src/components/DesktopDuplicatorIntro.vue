@@ -2,7 +2,7 @@
 import { useSlideContext } from "@slidev/client";
 import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
 
-import cppUsergroupLogo from "../public/images/cppug.png";
+import cppUsergroupLogo from "/images/cppug.png?url";
 
 const stages = [
   { step: "01", label: "EMPTY DESKTOP", scene: "LOCAL PROJECTOR" },

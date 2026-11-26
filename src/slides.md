@@ -149,9 +149,9 @@ Without any plumbing
 # Andreas Reischuck
 
 <div class="mt-6 grid grid-cols-[0.56fr_1.44fr] items-center gap-[2.4rem]">
-  <img class="m-auto max-h-[430px] drop-shadow-[0_12px_18px_rgb(15_23_42_/_0.18)]" :src="'/images/andreas.png'" alt="Andreas Reischuck" />
+  <img class="m-auto h-[350px] w-auto drop-shadow-[0_12px_18px_rgb(15_23_42_/_0.18)]" :src="'/images/andreas.png'" alt="Andreas Reischuck" />
   <div>
-    <div class="max-w-[970px] text-[2.55rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic">I like code that says what it is <em>trying to do.</em></div>
+    <div class="max-w-[970px] text-[2.55rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic">Experiment, Play, <em>Use and Teach</em></div>
     <div class="mt-[1.2rem] grid gap-3 text-[1.4em]">
       <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">⌁</span><span>C++ developer and software architect</span></div>
       <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.5rem] text-brand-orange">◫</span><span>Building tools people use every day</span></div>
@@ -161,7 +161,37 @@ Without any plumbing
 </div>
 
 <!--
-Personal bridge: these examples are not invented kata. They come from tools I care about and maintain.
+I like to try ideas in small experiments, put them to work, and share what I learn. The examples in this talk come from tools we use and maintain at HicknHack.
+-->
+
+---
+
+# HicknHack Software
+
+<div class="mt-[2.8rem] grid grid-cols-[1.16fr_0.84fr] items-stretch gap-12">
+  <div class="flex flex-col justify-center">
+    <div class="text-[3.4rem] font-[760] leading-[1.04] tracking-[-0.045em]">A dedicated software<br />shop in <span class="text-brand-blue">Dresden.</span></div>
+    <div class="mt-5 text-[1.5rem] text-muted">We build custom software for our customers.</div>
+    <div class="mt-10 flex items-center gap-5 rounded-xl bg-[#0b111b] px-5 py-4 text-white">
+      <span class="grid size-14 shrink-0 place-items-center rounded-lg bg-white/10 text-orange-300" aria-hidden="true">
+        <span class="relative size-7 rounded-full shadow-[inset_0_0_0_2px_currentColor]">
+          <span class="absolute bottom-1/2 left-1/2 h-2 w-[2px] rounded-full bg-current"></span>
+          <span class="absolute top-1/2 left-1/2 h-[2px] w-[7px] rounded-full bg-current"></span>
+        </span>
+      </span>
+      <div>
+        <div class="text-[1.5rem] font-bold leading-tight">We bill mostly by the hour</div>
+        <div class="mt-1 text-[1.1rem] text-slate-300">That’s where Hourglass comes in.</div>
+      </div>
+    </div>
+  </div>
+  <div class="grid min-h-[390px] place-items-center rounded-3xl border border-line bg-white p-10 shadow-slide-card">
+    <img class="w-[340px]" :src="'/images/hicknhackLogo_new_text.png'" alt="HicknHack Software GmbH logo" />
+  </div>
+</div>
+
+<!--
+We bill most of our customer work by the hour. We organize projects in Redmine and use its Hourglass plugin to track what we worked on. The Hourglass companion app is our first coroutine example.
 -->
 
 ---
@@ -193,8 +223,6 @@ class: "relative overflow-hidden flex flex-col justify-center bg-[#0b111b] text-
 
 <!--
 First use case: the Hourglass desktop and Android app. It is a Qt client for the REST API exposed by our Hourglass plugin for Redmine.
-
-Billing our time is the most transparent evaluation. We use Redmine is to organize the company and projects. We maintain the Hourglass plugin to track what we have done. This app is its desktop and Android companion.
 -->
 
 ---
@@ -394,17 +422,35 @@ Start with a clean desktop and an idle projector. The duplicator begins with no 
 
 # The Core Loop
 
-<div class="mt-[1.4rem] flex items-stretch gap-[0.7rem] text-[1.8rem]">
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600 p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>CAPTURE</strong><small>acquire changes</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-orange p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>RENDER</strong><small>update texture + draw</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>→</div>
-  <div class="flex min-h-[115px] flex-1 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-green p-[0.8rem] text-center [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted" v-click><strong>MAIN</strong><small>update UI status</small></div>
-  <div class="self-center text-[1.8rem] font-extrabold text-brand-orange" v-click>↩</div>
+<div class="relative mx-auto mt-10 h-[512px] w-[960px] text-center text-[1.8rem] [&_strong]:text-brand-blue [&_small]:mt-[0.35rem] [&_small]:text-muted">
+  <svg class="absolute inset-0 size-full text-brand-orange" viewBox="0 0 960 512" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <defs>
+      <marker id="core-loop-arrowhead" viewBox="0 0 16 20" refX="12" refY="10" markerWidth="16" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto">
+        <path d="M 2 2 L 12 10 L 2 18" />
+      </marker>
+    </defs>
+    <!-- All three arcs follow the circle centered at (480, 250). -->
+    <path v-click="2" d="M 642 59.59 A 250 250 0 0 1 726.10 294" marker-end="url(#core-loop-arrowhead)" />
+    <path v-click="3" d="M 632.63 448 A 250 250 0 0 1 327.37 448" marker-end="url(#core-loop-arrowhead)" />
+    <path v-click="4" d="M 233.90 294 A 250 250 0 0 1 318 59.59" marker-end="url(#core-loop-arrowhead)" />
+  </svg>
+  <div v-click="1" class="absolute top-4 left-1/2 flex h-[116px] w-[288px] -translate-x-1/2 flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-blue-600">
+    <strong>CAPTURE</strong><small>acquire changes</small>
+  </div>
+  <div v-click="2" class="absolute top-[314px] right-[90px] flex h-[116px] w-[288px] flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-orange">
+    <strong>RENDER</strong><small>update texture + draw</small>
+  </div>
+  <div v-click="3" class="absolute top-[314px] left-[90px] flex h-[116px] w-[288px] flex-col justify-center rounded-xl border-2 border-line border-t-[7px] border-t-brand-green">
+    <strong>MAIN</strong><small>update UI status</small>
+  </div>
 </div>
 
 <!--
-Clarify that thread hopping is a requirement, not cleverness: capture APIs, renderer resources, and UI each have affinity. APC means Asynchronous Procedure Call: ask a target thread to execute a callback when it enters an alertable wait.
+The capture API, renderer resources, and UI each have thread affinity.
+1. [click] Start on the capture thread to acquire desktop changes.
+1. [click] Switch to the render thread to update the texture and draw.
+1. [click] Switch to the main thread to update the UI status.
+1. [click] Return to the capture thread for the next desktop change. An Asynchronous Procedure Call (APC) can run a callback on a target thread when that thread enters an alertable wait.
 -->
 
 ---
@@ -439,37 +485,25 @@ Start with the Win32 declaration: a callback, a target thread, and one pointer-s
 
 # UserAPC Example
 
-<div class="apc-minimal mt-4" style="--prism-font-size:1.2rem">
+<div class="apc-minimal mt-4" :style="{
+  '--thread-skeleton-opacity': $clicks >= 1 ? 1 : 0,
+  '--thread-body-opacity': $clicks >= 2 ? 1 : 0,
+  '--apc-skeleton-opacity': $clicks >= 3 ? 1 : 0,
+  '--apc-body-opacity': $clicks >= 4 ? 1 : 0,
+  '--main-loop-opacity': $clicks >= 5 ? 1 : 0,
+}">
 
-<<< ./snippets/apc-introduction/main.c#minimal-apc c {14|6|15|9-11|10|16}{lines:true}
+<<< ./snippets/apc-introduction/main.c#minimal-apc c {0|5,7,14|6|9,11,15|10|16}{lines:true}
 
 </div>
 
 <!--
-WinMain creates the worker thread.
+Start with the includes and an empty WinMain.
+1. [click] WinMain creates the worker thread and passes ThreadLoop as its entry point.
 1. [click] The worker loops in an alertable wait, which gives Windows a place to dispatch its APC queue.
-1. [click] WinMain queues the APC with 42 as its pointer-sized value.
-1. [click] Windows invokes the APC callback on the worker thread.
-1. [click] The callback prints the observed value and flushes stdout so redirected output is visible.
+1. [click] WinMain queues PrintApc with 42 as its pointer-sized value. Windows invokes the callback on the worker thread.
+1. [click] PrintApc prints the value and flushes stdout so redirected output is visible.
 1. [click] WinMain deliberately never exits; the example test kills it after observing the output.
--->
-
----
-class: code-slide
----
-
-<div style="--prism-font-size:1.0rem"><!-- exact code is compiled by apc-introduction/build.sh -->
-
-<<< ./snippets/apc-introduction/ownership.cpp#owned-apc cpp {21|22|10-12|23|13|14-16|24}{lines:true}
-
-</div>
-
-<!--
-The adapter heap-owns every callback, keeping the ownership handoff explicit.
-1. [click] The PAPCFUNC-compatible thunk reconstructs the unique_ptr, invokes the functor, and destroys it on return.
-1. [click] The constructor creates the unique_ptr, so a failed or skipped queue operation cleans up normally.
-1. [click] c_parameter exposes the pointer as ULONG_PTR, and release transfers ownership away from the temporary adapter.
-1. [click] queueUserApc releases only after QueueUserAPC succeeds; otherwise the adapter destructor still owns and deletes the functor.
 -->
 
 ---
@@ -490,18 +524,20 @@ Git history gives us a clean before-and-after: this is the parent of commit d07f
 -->
 
 ---
+class: code-slide
+---
 
 # The coroutine glue
 
-<div style="--prism-font-size:1.1rem">
-
-<<< ./snippets/slide-projects/desktop-duplication-cpp/src/win32/Thread.h#resume-on-awaitable cpp {7-10|11|12}{lines:true}
-
-</div>
+<AwaiterMachinery example="thread" />
 
 <!--
-The APC callback reconstructs the coroutine handle and resumes it on the target thread.
-1. [click] await_suspend queues that callback with the handle address as its payload.
+Start with the signature. resumeOn takes the thread where the coroutine should continue.
+1. [click] Define the awaitable with a HANDLE member and return it with the target thread’s handle.
+1. [click] await_ready always returns false, await_suspend receives the coroutine handle, and await_resume has no result.
+1. [click] The APC callback reconstructs the coroutine handle and resumes it on the target thread.
+1. [click] Convert the coroutine handle’s address to an ULONG_PTR for the APC payload.
+1. [click] Queue the callback on the target thread, passing the address as its payload.
 1. [click] If QueueUserAPC fails, nobody can resume the suspended coroutine, so destroy its frame.
 -->
 
@@ -633,7 +669,7 @@ Give the audience a practical action for Monday. Find a single boundary, build o
   </div>
   <div>
     <div class="max-w-[970px] text-[2.65rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic">Bring curiosity.<br /><em>Keep the ownership clear.</em></div>
-    <p class="mt-6 text-xl text-muted">If real C++ systems, thoughtful architecture, and sharing what you learn sound fun—come work with HicknHack Software GmbH.</p>
+    <p class="mt-6 text-xl text-muted">If real C++ systems, thoughtful architecture, and sharing what you learn sound fun — come work with HicknHack Software GmbH.</p>
   </div>
 </div>
 
@@ -647,11 +683,11 @@ Invitation, not a hard sell. Mention current hiring/contact details verbally or 
 
 <div class="mt-7 grid grid-cols-2 items-center gap-[2.1rem]">
   <div class="text-center">
-    <img class="m-auto max-h-[235px]" :src="'/images/cppug.png'" alt="C++ user group" />
+    <img class="m-auto max-w-[435px]" :src="'/images/cppug.png'" alt="C++ user group" />
   </div>
   <div>
-    <div class="border-l-[7px] border-brand-orange pl-[1.2rem] text-[1.7rem] font-[650] leading-[1.25]">You do not need the final answer to give a valuable user-group talk.</div>
-    <div class="mt-8 grid gap-3">
+    <div class="border-l-[7px] border-brand-orange pl-[0.2rem] text-[1.7rem] font-[650] leading-[1.25]">You do not need the final answer to give a valuable user-group talk.</div>
+    <div class="mt-8 grid gap-3 text-[1.5rem]">
       <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.35rem] text-brand-orange">①</span><span>Show the problem you actually met</span></div>
       <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.35rem] text-brand-orange">②</span><span>Show the attempt that taught you something</span></div>
       <div class="grid grid-cols-[2.2rem_1fr] items-center border-b border-line py-[0.55rem]"><span class="text-[1.35rem] text-brand-orange">③</span><span>Invite the room into the next step</span></div>

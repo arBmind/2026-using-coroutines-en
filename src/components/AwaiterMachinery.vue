@@ -14,41 +14,55 @@ import {
   watchEffect,
 } from "vue";
 
-import source from "../snippets/hourglass-reply-await-bridge.cpp?raw";
+import networkSource from "../snippets/hourglass-reply-await-bridge.cpp?raw";
+import threadSource from "../snippets/slide-projects/desktop-duplication-cpp/src/win32/Thread.h?raw";
 
-const sourceLines = source.trim().split("\n");
-const sourceTokens = ref<ThemedToken[][]>([]);
+const { example = "network" } = defineProps<{ example?: "network" | "thread" }>();
 
-const stages = [
+type Stage = {
+  title: string;
+  explanation: string;
+  added: number[];
+  focus: number[];
+  gapAfter?: number;
+  overview?: boolean;
+};
+
+const networkStages: Stage[] = [
   {
     title: "store the coroutine",
     explanation: "The task owns the handle that can continue it.",
     added: [1, 2, 25],
     focus: [2],
+    gapAfter: 2,
   },
   {
     title: "intercept the reply",
     explanation: "The promise turns QNetworkReply into an awaitable.",
     added: [3, 4, 5, 23, 24],
     focus: [3, 4, 5, 23, 24],
+    gapAfter: 5,
   },
   {
     title: "build one Awaiter",
     explanation: "It keeps the reply and returns it to the coroutine.",
     added: [6, 7, 21, 22],
     focus: [6, 7, 21, 22],
+    gapAfter: 7,
   },
   {
     title: "skip needless suspension",
     explanation: "A finished reply can continue immediately.",
     added: [8, 9, 10],
     focus: [8, 9, 10],
+    gapAfter: 10,
   },
   {
     title: "resume on finished()",
     explanation: "The Qt callback continues the saved coroutine.",
     added: [11, 12, 13, 14, 15],
     focus: [11, 12, 13, 14, 15],
+    gapAfter: 16,
   },
   {
     title: "return the result",
@@ -61,8 +75,68 @@ const stages = [
     explanation: "The full adapter fits in one final overview.",
     added: [],
     focus: [],
+    overview: true,
   },
 ];
+
+const threadStages: Stage[] = [
+  {
+    title: "choose the target thread",
+    explanation: "resumeOn takes the thread where the coroutine will continue.",
+    added: [1, 18],
+    focus: [],
+    gapAfter: 1,
+  },
+  {
+    title: "return an awaitable",
+    explanation: "It stores the target thread’s Win32 handle.",
+    added: [2, 3, 16, 17],
+    focus: [2, 3, 16, 17],
+    gapAfter: 3,
+  },
+  {
+    title: "add the awaiter methods",
+    explanation: "The coroutine always suspends and resumes without a value.",
+    added: [4, 5, 6, 14, 15],
+    focus: [5, 6, 14, 15],
+    gapAfter: 6,
+  },
+  {
+    title: "resume in the APC callback",
+    explanation: "Reconstruct the coroutine handle and resume it.",
+    added: [7, 8, 9, 10],
+    focus: [7, 8, 9, 10],
+    gapAfter: 10,
+  },
+  {
+    title: "prepare the APC payload",
+    explanation: "Encode the coroutine address as a pointer-sized integer.",
+    added: [11],
+    focus: [11],
+    gapAfter: 11,
+  },
+  {
+    title: "queue the callback",
+    explanation: "Pass the callback, thread handle, and payload to QueueUserAPC.",
+    added: [12],
+    focus: [12],
+    gapAfter: 12,
+  },
+  {
+    title: "handle a queue failure",
+    explanation: "Destroy the suspended coroutine if the APC could not be queued.",
+    added: [13],
+    focus: [13],
+  },
+];
+
+const threadExample = example === "thread";
+const stages = threadExample ? threadStages : networkStages;
+const source = threadExample
+  ? threadSource.split(/^\/\/ #(?:end)?region resume-on-awaitable$/m)[1]
+  : networkSource;
+const sourceLines = source.trim().split("\n");
+const sourceTokens = ref<ThemedToken[][]>([]);
 
 const stage = ref(0);
 const codeViewport = ref<HTMLElement>();
@@ -80,10 +154,7 @@ const visibleLineNumbers = computed(() => {
 
 const current = computed(() => stages[stage.value]);
 const focusLines = computed(() => new Set(current.value.focus));
-const completeView = computed(() => stage.value === stages.length - 1);
-const activeGapAfter = computed(
-  () => [2, 5, 7, 10, 16, undefined, undefined][stage.value],
-);
+const completeView = computed(() => current.value.overview);
 
 type DisplayRow =
   | { kind: "line"; key: string; lineNumber: number }
@@ -94,17 +165,19 @@ type DisplayRow =
       afterLine: number;
     };
 
-const gapAfterLines = new Set([2, 5, 7, 10, 16]);
+const gapAfterLines = new Set(stages.map(({ gapAfter }) => gapAfter));
 const displayRows: DisplayRow[] = sourceLines.flatMap((line, index) => {
   const lineNumber = index + 1;
   const rows: DisplayRow[] = [];
   rows.push({ kind: "line", key: `line-${lineNumber}`, lineNumber });
   if (gapAfterLines.has(lineNumber)) {
-    const firstOmittedLine = lineNumber + 1;
+    const firstOmittedCodeLine = sourceLines
+      .slice(lineNumber)
+      .find((line) => line.trim());
     rows.push({
       kind: "gap",
       key: `gap-after-${lineNumber}`,
-      indent: sourceLines[firstOmittedLine - 1].match(/^\s*/)?.[0].length ?? 0,
+      indent: firstOmittedCodeLine?.match(/^\s*/)?.[0].length ?? 0,
       afterLine: lineNumber,
     });
   }
@@ -113,7 +186,7 @@ const displayRows: DisplayRow[] = sourceLines.flatMap((line, index) => {
 
 function rowIsVisible(row: DisplayRow) {
   if (row.kind === "line") return visibleLineNumbers.value.has(row.lineNumber);
-  return activeGapAfter.value === row.afterLine;
+  return current.value.gapAfter === row.afterLine;
 }
 
 function rowIsFocused(row: DisplayRow | undefined) {
@@ -255,7 +328,7 @@ onUnmounted(() => {
     <div
       ref="codeViewport"
       class="code-viewport h-[31rem] overflow-hidden rounded-xl border border-slate-300 bg-[#f7f7f8] py-[0.35rem] shadow-slide-card"
-      :class="{ 'is-complete': completeView }"
+      :class="{ 'is-complete': completeView, 'thread-example': threadExample }"
     >
       <div class="code-lines">
         <div v-for="row in displayRows" :key="row.key" :class="rowClasses(row)">
@@ -328,7 +401,7 @@ onUnmounted(() => {
 
 .code-line {
   &.is-visible {
-    height: 1.7rem;
+    height: var(--code-line-height, 1.7rem);
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
@@ -348,10 +421,15 @@ onUnmounted(() => {
     border-radius: 0;
     background: transparent;
     /* Slidev treats any code element outside a pre as inline code (0.9em). */
-    font-size: 1.3rem !important;
-    line-height: 1.7rem;
+    font-size: var(--code-font-size, 1.3rem) !important;
+    line-height: var(--code-line-height, 1.7rem);
     padding: 0;
   }
+}
+
+.thread-example {
+  --code-font-size: 1.15rem;
+  --code-line-height: 1.65rem;
 }
 
 .code-gap.is-visible {
