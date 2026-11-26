@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "slidev --bind 0.0.0.0 src/slides.md --remote",
-    "build": "slidev build src/slides.md --out dist --base ./",
+    "build": "slidev build src/slides.md --out dist",
     "build:pdf": "slidev build src/slides.md --out dist --base ./ --download",
     "export": "slidev export src/slides.md --output coroutines-slides.pdf --per-slide",
     "export:clicks": "slidev export src/slides.md --output coroutines-slides-clicks.pdf --with-clicks --with-toc",

@@ -1,8 +1,32 @@
 # C++20 Coroutines in Action slides
 
-This workspace uses [Slidev](https://sli.dev/) instead of the old custom `asciidoctor-bespoke` stack.
+## Abstract
 
-The root folder contains editor and container tooling. The actual deck lives under `src/`.
+Are you intrigued by C++20 coroutines but unsure how to apply them in your projects? This talk demystifies coroutines by showcasing their practical benefits in two real-world scenarios, without diving into complex libraries or intricate details.
+
+We'll explore:
+
+1. Streamlining REST API interactions: Learn how coroutines can simplify asynchronous operations, eliminating callback hell and complex state management in a data acquisition application.
+2. Enhancing multi-threaded workloads: Discover how coroutines can revolutionize your approach to Asynchronous Procedure Calls (APC) on Windows, leading to cleaner memory management and a more intuitive architecture.
+
+Through these examples, you'll gain insights into:
+
+- Identifying opportunities for coroutine usage in your existing codebase
+- Practical implementation strategies for coroutines
+- The tangible benefits of adopting coroutines, including improved code readability and maintainability
+
+Walk away with the knowledge and confidence to leverage C++20 coroutines for immediate improvements in your projects. This talk is perfect for C++ developers looking to enhance their codebases with modern, efficient solutions.
+
+- [Meeting C++ 2026 talk page](https://meetingcpp.com/2026/Talks/items/Simple_use_cases_for_Coroutines.html)
+- [Desktop Duplicator source code with coroutines](https://github.com/arBmind/desktop-duplication-cpp/tree/feature/full_coroutine)
+
+## [View Final Slides](https://arbmind.github.io/2026-using-coroutines-en/)
+
+[![Opening slide of C++20 Coroutines in Action](docs/first-slide.png)](https://arbmind.github.io/2026-using-coroutines-en/)
+
+[Logo credits](src/public/images/ATTRIBUTION.md)
+
+The deck uses [Slidev](https://sli.dev/) and lives under `src/`.
 
 ## Start in VS Code
 
@@ -31,8 +55,8 @@ Useful presenter shortcuts:
 ## Build outputs
 
 ```sh
-npm run build          # static HTML in dist/
-npm run build:pdf      # static HTML plus downloadable PDF in dist/
+npm run build          # static HTML in src/dist/
+npm run build:pdf      # static HTML plus downloadable PDF in src/dist/
 npm run export         # coroutines-slides.pdf
 npm run export:clicks  # one PDF page per reveal step
 npm run screenshots    # PNGs for every final reveal plus presenter view

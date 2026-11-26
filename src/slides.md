@@ -2,9 +2,12 @@
 theme: default
 title: C++20 Coroutines in Action
 author: Andreas Reischuck
+info: |
+  [Logo credits](https://github.com/arBmind/2026-using-coroutines-en/blob/main/src/public/images/ATTRIBUTION.md)
 keywords: C++20, coroutines, Meeting C++, Qt, Windows APC
 presenter: true
 browserExporter: dev
+preloadImages: false
 exportFilename: coroutines-slides
 lineNumbers: true
 colorSchema: light
@@ -35,8 +38,8 @@ drawings:
     <div class="mt-4 text-[1.1rem] font-bold">Andreas Reischuck</div>
   </div>
   <div class="relative">
-    <img class="absolute top-[-3%] right-[5%] z-3 max-h-[17%] w-[36%] rounded-lg bg-white/88 p-[0.3rem] object-contain" :src="'/images/hicknhackLogo_new_text.png'" alt="HicknHack Software GmbH" />
-    <img class="absolute right-[13%] bottom-[3%] z-2 h-[80%]" :src="'/images/andreas.png'" alt="Andreas Reischuck" />
+    <img class="absolute top-[-3%] right-[5%] z-3 max-h-[17%] w-[36%] rounded-lg bg-white/88 p-[0.3rem] object-contain" src="./assets/images/hicknhackLogo_new_text.png" alt="HicknHack Software GmbH" />
+    <img class="absolute right-[13%] bottom-[3%] z-2 h-[80%]" src="./assets/images/andreas.png" alt="Andreas Reischuck" />
   </div>
 </div>
 
@@ -149,7 +152,7 @@ Without any plumbing
 # Andreas Reischuck
 
 <div class="mt-6 grid grid-cols-[0.56fr_1.44fr] items-center gap-[2.4rem]">
-  <img class="m-auto h-[350px] w-auto drop-shadow-[0_12px_18px_rgb(15_23_42_/_0.18)]" :src="'/images/andreas.png'" alt="Andreas Reischuck" />
+  <img class="m-auto h-[350px] w-auto drop-shadow-[0_12px_18px_rgb(15_23_42_/_0.18)]" src="./assets/images/andreas.png" alt="Andreas Reischuck" />
   <div>
     <div class="max-w-[970px] text-[2.55rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic">Experiment, Play, <em>Use and Teach</em></div>
     <div class="mt-[1.2rem] grid gap-3 text-[1.4em]">
@@ -186,7 +189,7 @@ I like to try ideas in small experiments, put them to work, and share what I lea
     </div>
   </div>
   <div class="grid min-h-[390px] place-items-center rounded-3xl border border-line bg-white p-10 shadow-slide-card">
-    <img class="w-[340px]" :src="'/images/hicknhackLogo_new_text.png'" alt="HicknHack Software GmbH logo" />
+    <img class="w-[340px]" src="./assets/images/hicknhackLogo_new_text.png" alt="HicknHack Software GmbH logo" />
   </div>
 </div>
 
@@ -209,7 +212,7 @@ class: "relative overflow-hidden flex flex-col justify-center bg-[#0b111b] text-
 
 <div class="absolute right-20 top-20 bottom-60 w-[40%] flex flex-col items-expand gap-1">
   <div class="flex items-center justify-center gap-5 rounded-2xl border border-white/12 bg-white/5 px-6 py-5">
-    <img class="h-16 w-auto rounded-md bg-white px-3 py-2" :src="'/images/redmine-logo.png'" alt="Redmine" />
+    <img class="h-16 w-auto rounded-md bg-white px-3 py-2" src="./assets/images/redmine-logo.png" alt="Redmine" />
     <span class="text-3xl font-light text-slate-500">+</span>
     <div class="grid justify-items-center gap-2"><img class="size-16" src="./assets/hourglass/appicon.ico" alt="Hourglass" /><strong class="text-sm">Hourglass</strong></div>
   </div>
@@ -218,7 +221,7 @@ class: "relative overflow-hidden flex flex-col justify-center bg-[#0b111b] text-
     <span class="rounded-full border border-cyan-300/35 bg-cyan-300/8 px-3 py-2 font-mono text-[1rem] font-extrabold tracking-[0.08em] text-cyan-200">HTTP · REST</span>
     <span class="w-px h-5 bg-gradient-to-b from-cyan-300 to-transparent"></span>
   </div>
-  <div class="grid place-items-center rounded-2xl border border-white/12 bg-white/5 px-6 py-5"><img class="h-[92px] w-auto" :src="'/images/qt-logo.png'" alt="Qt" /></div>
+  <div class="grid place-items-center rounded-2xl border border-white/12 bg-white/5 px-6 py-5"><img class="h-[92px] w-auto" src="./assets/images/qt-logo.png" alt="Qt" /></div>
 </div>
 
 <!--
@@ -246,7 +249,7 @@ transition: slide-left
 ---
 
 <div class="mt-7 grid grid-cols-[0.48fr_1.52fr] items-center gap-8">
-  <div class="grid place-items-center rounded-3xl bg-[#0b111b] p-8 shadow-[0_18px_38px_rgb(15_23_42_/_0.16)]"><img class="w-[210px]" :src="'/images/qt-logo.png'" alt="Qt" /></div>
+  <div class="grid place-items-center rounded-3xl bg-[#0b111b] p-8 shadow-[0_18px_38px_rgb(15_23_42_/_0.16)]"><img class="w-[210px]" src="./assets/images/qt-logo.png" alt="Qt" /></div>
   <div>
     <div class="mb-5 text-[2rem] font-[760] tracking-[-0.035em] text-brand-blue">A cross-platform C++ application framework</div>
     <div class="grid grid-cols-3 gap-3 text-center text-[1.8rem] font-bold">
@@ -665,7 +668,7 @@ Give the audience a practical action for Monday. Find a single boundary, build o
 
 <div class="mt-8 grid grid-cols-2 items-center gap-[2.1rem]">
   <div class="text-center">
-    <img class="mx-auto max-h-[190px] max-w-[460px] object-contain" :src="'/images/hicknhackLogo_new_text.png'" alt="HicknHack Software GmbH" />
+    <img class="mx-auto max-h-[190px] max-w-[460px] object-contain" src="./assets/images/hicknhackLogo_new_text.png" alt="HicknHack Software GmbH" />
   </div>
   <div>
     <div class="max-w-[970px] text-[2.65rem] font-[760] tracking-[-0.04em] leading-[1.07] [&_em]:text-brand-blue [&_em]:not-italic">Bring curiosity.<br /><em>Keep the ownership clear.</em></div>
@@ -683,7 +686,7 @@ Invitation, not a hard sell. Mention current hiring/contact details verbally or 
 
 <div class="mt-7 grid grid-cols-2 items-center gap-[2.1rem]">
   <div class="text-center">
-    <img class="m-auto max-w-[435px]" :src="'/images/cppug.png'" alt="C++ user group" />
+    <img class="m-auto max-w-[435px]" src="./assets/images/cppug.png" alt="C++ user group" />
   </div>
   <div>
     <div class="border-l-[7px] border-brand-orange pl-[0.2rem] text-[1.7rem] font-[650] leading-[1.25]">You do not need the final answer to give a valuable user-group talk.</div>
